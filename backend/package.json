@@ -1,0 +1,21 @@
+{
+  "name": "messenger-server",
+  "version": "1.0.0",
+  "description": "server for the messenger app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrei1892/messenger.git"
+  },
+  "author": "Andrei Piti",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
