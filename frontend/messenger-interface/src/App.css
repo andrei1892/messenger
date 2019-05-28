@@ -1,0 +1,236 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Calibre, Helvetica Neue, Segoe UI, Helvetica, Arial,
+    Lucida Grande, sans-serif;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* start page */
+.first-page-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 10%;
+}
+
+/* login form */
+.login-form-container {
+  background-color: lightblue;
+  width: 50%;
+  margin: auto;
+  padding: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form {
+  position: relative;
+  background-color: lightblue;
+  margin: auto;
+  padding: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.login-input,
+.login-submit-button {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  height: 30px;
+  margin: 5px;
+  text-align: center;
+}
+
+.login-input:focus {
+  border: 1px #0084ff solid;
+  outline: none;
+}
+
+.login-submit-button {
+  background-color: #0084ff;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  width: 75px;
+  cursor: pointer;
+}
+
+.login-form-container a {
+  font-family: inherit;
+  text-decoration: none;
+  background-color: inherit;
+}
+
+/* register form */
+.register-form-container {
+  background-color: lightblue;
+  position: relative;
+  width: 40%;
+  margin: auto;
+  padding: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-register-form {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  font-size: 75%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: lightblue;
+}
+
+.register-form {
+  position: relative;
+  background-color: lightblue;
+  margin: auto;
+  padding: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.register-input {
+  border-radius: 50px;
+  height: 30px;
+  margin: 5px;
+  text-align: center;
+}
+
+.register-submit-button {
+  background-color: #0084ff;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  height: 30px;
+  margin: 5px;
+  width: 75px;
+}
+
+/* messenger page */
+.page-container {
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* messenger page  -> header */
+.user-info {
+  height: 10%;
+  align-items: center;
+}
+
+/* messenger page -> main   */
+
+.chat-wrapper {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  height: 90%;
+  width: 100%;
+}
+
+.chat-column {
+  border: 0.5px lightgray solid;
+  overflow-y: hidden;
+}
+
+/* messenger page -> main -> Conversation List ( history )     */
+
+.conversations-list {
+  overflow: hidden;
+}
+.search-conversations-list {
+  width: 200px;
+  margin: 5px;
+  border: 1px lightgray solid;
+  border-radius: 15px;
+  text-align: center;
+}
+.search-conversations-list:focus {
+  outline: none;
+  border: 1px #0084ff solid;
+}
+
+.previous-conversations {
+  border: 0.1px lightgray solid;
+  height: 50px;
+}
+
+.conversations-list:hover {
+  overflow-y: auto;
+}
+
+/* messenger page -> main -> current Conversation */
+
+.current-conversation-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chat-conversation {
+  height: 80%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.messaged-received,
+.messaged-sent {
+  width: 50%;
+  padding: 5px;
+}
+
+.messaged-received {
+  align-self: flex-start;
+  text-align: left;
+}
+
+.messaged-sent {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.chat-send {
+  height: 20%;
+  width: 100%;
+  position: relative;
+}
+
+.message-content-container {
+  position: relative;
+  height: 100%;
+}
+
+.message-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.message-buttons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* messenger page -> main -> Sidebar ( info about whom we speak) */
