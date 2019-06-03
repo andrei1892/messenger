@@ -22,10 +22,10 @@ class App extends Component {
       <div className="first-page-wrapper">
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" render={props => <LoginForm {...props} getCredentials={this.getCredentials} />} />
+            <Route exact path="/" render={props => <LoginForm {...props} getCredentials={this.getCredentials} {...this.state}/>} />
             <Route
               path="/register"
-              render={props => <RegisterForm {...props} />}
+              render={props => <RegisterForm {...props} getCredentials={this.getCredentials} {...this.state}/>}
             />
             <Route path="/user/profile" render={() => <Profile />} />
           </Switch>

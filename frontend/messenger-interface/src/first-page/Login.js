@@ -1,25 +1,29 @@
 import React from "react";
-import { Link , Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
 const LoginForm = props => {
-  const[isLogged, logging] = React.useState(false);
+  const [isLogged, logging] = React.useState(false);
 
-  const logIn = props => {
+  const logIn = e => {
+    e.preventDefault();
     axios
       .post("http://localhost:4000/login", {
         username: props.username,
         password: props.password
       })
-      .then( response => {
-          if(response.isValid){
-              logging(true);
-          }
+      .then(response => {
+        console.log(response);
+        if (response.data.isValid) {
+          logging(true);
+          props.getCredentials({ target: { name: "password", value: "" } });
+          alert(response.data.message);
+        } else alert(response.data.message);
       })
-      .catch( err => console.log(err)  )
+      .catch(err => console.log(err));
   };
 
-  if(isLogged) return <Redirect to='/user/profile' />
+  if (isLogged) return <Redirect to="/user/profile" />;
   return (
     <div className="login-form-container">
       <h2> Be together, whenever. </h2>
