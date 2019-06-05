@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import SubmitButton from '../reusables/SubmitButton'
 
 const RegisterForm = props => {
   console.log(props)
@@ -30,12 +31,12 @@ const RegisterForm = props => {
     return <Redirect to="/" />;
   }
   return (
-    <div className="register-form-container">
+    <div className="form-container register-form-container">
       <h3>Please complete all fields</h3>
       <Link to="/">
         <button className="close-register-form">X</button>
       </Link>
-      <form id="register" className="register-form" method="post" onSubmit={submitRegister}>
+      <form id="register" className="form" method="post" onSubmit={submitRegister}>
         <label htmlFor="registerFirstname">
           <b>Firstname</b>
         </label>
@@ -84,12 +85,7 @@ const RegisterForm = props => {
           onChange={props.getCredentials}
           required
         />
-        <button
-          className="register-submit-button btn btn-success"
-          type = "submit"
-        >
-          Register
-        </button>
+         <SubmitButton class="submit-button" />
       </form>
     </div>
   );

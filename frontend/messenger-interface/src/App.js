@@ -19,7 +19,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="first-page-wrapper">
+      <div className="page-wrapper">
         <BrowserRouter>
           <Switch>
             <Route exact path="/" render={props => <LoginForm {...props} getCredentials={this.getCredentials} {...this.state}/>} />
@@ -27,7 +27,7 @@ class App extends Component {
               path="/register"
               render={props => <RegisterForm {...props} getCredentials={this.getCredentials} {...this.state}/>}
             />
-            <Route path="/user/profile" render={() => <Profile />} />
+            <Route path="/profile" render={() => <Profile />} />
           </Switch>
         </BrowserRouter>
       </div>

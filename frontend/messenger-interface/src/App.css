@@ -16,37 +16,19 @@ body {
 }
 
 /* start page */
-.first-page-wrapper {
+.page-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-top: 5%;
 }
 
 /* login form */
 .login-form-container {
   background-color: lightblue;
   width: 50%;
-  margin: auto;
-  padding: 2.5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.login-form {
-  position: relative;
-  background-color: lightblue;
-  margin: auto;
-  padding: 2.5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-}
-
-.login-input,
-.login-submit-button {
+.login-input {
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;
@@ -60,15 +42,6 @@ body {
   outline: none;
 }
 
-.login-submit-button {
-  background-color: #0084ff;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  width: 75px;
-  cursor: pointer;
-}
-
 .login-form-container a {
   font-family: inherit;
   text-decoration: none;
@@ -79,12 +52,7 @@ body {
 .register-form-container {
   background-color: lightblue;
   position: relative;
-  width: 40%;
-  margin: auto;
-  padding: 2.5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 50%;
 }
 
 .close-register-form {
@@ -98,32 +66,11 @@ body {
   background-color: lightblue;
 }
 
-.register-form {
-  position: relative;
-  background-color: lightblue;
-  margin: auto;
-  padding: 2.5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-}
-
 .register-input {
   border-radius: 50px;
   height: 30px;
   margin: 5px;
   text-align: center;
-}
-
-.register-submit-button {
-  background-color: #0084ff;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  height: 30px;
-  margin: 5px;
-  width: 75px;
 }
 
 /* messenger page */
@@ -234,3 +181,38 @@ body {
 }
 
 /* messenger page -> main -> Sidebar ( info about whom we speak) */
+
+
+/* reusables */
+
+.form-container{
+  margin: 5% auto;
+  padding: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  position: relative;
+  background-color: lightblue;
+  margin: auto;
+  padding: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.submit-button{
+  background-color: #0084ff;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  height: 30px;
+  margin: 5px;
+  width: 75px;
+  cursor: pointer;
+}
+
+

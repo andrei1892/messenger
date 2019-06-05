@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const USER = require("../model/usersTemplate");
+const MESSAGES = require('../model/messagesSchema');
 const CONFIG = require("../config");
 
 const register = (req, res) => {
@@ -19,11 +20,20 @@ const register = (req, res) => {
     });
 
     newUser.save(err => {
-      if (err) { console.log(err);
-        res.status(409).json({ isValid: false, message: "User already exists" });}
-      else res.status(200).json({ isValid: true,  message: "Registration completed" });
+      if (err) {
+        console.log(err);
+        res
+          .status(409)
+          .json({ isValid: false, message: "User already exists" });
+      } else
+        res
+          .status(200)
+          .json({ isValid: true, message: "Registration completed" });
     });
-  } else res.status(400).json({ isValid: false, message: "Please complete all fields" });
+  } else
+    res
+      .status(400)
+      .json({ isValid: false, message: "Please complete all fields" });
 };
 
 const login = (req, res) => {
@@ -32,24 +42,55 @@ const login = (req, res) => {
 
     USER.findOne(findUser).then(response => {
       if (response === null)
-        res.status(404).json({ isValid:false, message: "Username or password incorrect" });
+        res
+          .status(404)
+          .json({ isValid: false, message: "Username or password incorrect" });
       else {
         let token = jwt.sign(
           { username: req.body.username },
           CONFIG.JWT_SECRET_KEY
         );
-        res.status(200).json({ isValid: true, token: token, message: "Login Succesfull" });
+        res
+          .status(200)
+          .json({ isValid: true, token: token, message: "Login Succesfull" });
       }
     });
   } else
-    res
-      .send(400)
-      .json({ isValid: false, message: "Please insert a valid username or password" });
+    res.send(400).json({
+      isValid: false,
+      message: "Please insert a valid username or password"
+    });
 };
 
-const get_my_data = (req, res) => {};
+const get_my_data = (req, res) => {
+  jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
+    if (err) {
+      return res.send(403);
+    }
+    let findUser = { username: payload.username };
+    USER.findOne(findUser)
+      .then(response => {
+        if (response === null) {
+          res.status(404).json({ message: "No user found" });
+        } else {
+          res.status(200).json({firstname: response.firstname , lastname: response.lastname })
+        }
+      })
+      .catch(err => res.send(404).json({ message: err }));
+  });
+};
 
-const get_conversations_list = (req, res) => {};
+const get_conversations_list = (req, res) => {
+  jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
+    if (err) {
+      return res.send(403);
+    }
+    let findUser = { username: payload.username };
+    USER.findOne(findUser)
+    .then()
+
+  })
+};
 
 const get_friends_request = (req, res) => {};
 

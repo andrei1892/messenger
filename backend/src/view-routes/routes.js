@@ -1,13 +1,17 @@
 const express = require("express");
 const REQUESTS = require("../control/requests");
 const router = express.Router();
-
+const MIDDLEWARE = require('../control/middleware');
 // shorthand routes
 
 router.post("/register", REQUESTS.register);
 router.post("/login", REQUESTS.login);
-router.get("/get_conversations", REQUESTS.get_conversations_list);
-router.get("/search_friends", REQUESTS.search_friends);
+//middleware
+router.use('/user' , MIDDLEWARE)
+router.get('/user/get_my_data', REQUESTS.get_my_data )
+router.get("/user/get_conversations", REQUESTS.get_conversations_list);
+router.get("/user/search_friends", REQUESTS.search_friends);
+
 router.post("/send_frequest", REQUESTS.send_friend_request);
 router.post("/send_seen", REQUESTS.send_seen_event);
 router.post("/send_message", REQUESTS.send_message);

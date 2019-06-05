@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import SubmitButton from '../reusables/SubmitButton'
 
 const LoginForm = props => {
   const [isLogged, logging] = React.useState(false);
@@ -13,21 +14,21 @@ const LoginForm = props => {
         password: props.password
       })
       .then(response => {
-        console.log(response);
         if (response.data.isValid) {
-          logging(true);
-          props.getCredentials({ target: { name: "password", value: "" } });
           alert(response.data.message);
+          logging(true);
+          localStorage.setItem('token', response.data.token)
+          props.getCredentials({ target: { name: "password", value: "" } });
         } else alert(response.data.message);
       })
       .catch(err => console.log(err));
   };
 
-  if (isLogged) return <Redirect to="/user/profile" />;
+  if (isLogged) return <Redirect to="/profile" />;
   return (
-    <div className="login-form-container">
+    <div className="form-container login-form-container">
       <h2> Be together, whenever. </h2>
-      <form id="login" className="login-form" onSubmit={logIn}>
+      <form id="login" className="form" onSubmit={logIn}>
         <label htmlFor="loginEmail">
           <b>Log In below</b>
         </label>
@@ -46,9 +47,7 @@ const LoginForm = props => {
           placeholder="Password"
           onChange={props.getCredentials}
         />
-        <button className="login-submit-button " type="submit">
-          Submit
-        </button>
+        <SubmitButton class="submit-button" />
       </form>
       <p>
         Don't have an account? <Link to="/register"> Register </Link> now!
