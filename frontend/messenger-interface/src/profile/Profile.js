@@ -128,7 +128,7 @@ class Profile extends Component {
     return (
       <div className="page-container container-fluid">
         <UserInfo data={this.state.myData} />
-        <main className="chat-wrapper ">
+        <main className="main-wrapper ">
           <GetConversations messages={this.state.messages} />
           <CurrentConversation />
           <FriendshipsBar

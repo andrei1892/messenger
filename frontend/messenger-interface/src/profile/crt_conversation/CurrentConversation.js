@@ -7,7 +7,7 @@ class CurrentConversation extends Component {
   }
   render() {
     return (
-      <div className="current-conversation-wrapper chat-column">
+      <div className="current-conversation-wrapper column">
         <div className="chat-conversation">
           <p className="messaged-received">msg received</p>
           <p className="messaged-sent">msg send</p>

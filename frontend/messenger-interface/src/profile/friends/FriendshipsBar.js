@@ -10,7 +10,7 @@ class Friendships extends Component{
 
     render(){
         return(
-            <div className="about-interlocutor chat-column" >
+            <div className="friendships-bar-container column" >
                 <Friends friends={this.props.friends} pendingRequests={this.props.pendingRequests}  acceptRequest={this.props.acceptRequest}    />
                 <br/>
                 <FriendsSuggestions sendFriendRequest={this.props.sendFriendRequest} suggestions={this.props.suggestions} />

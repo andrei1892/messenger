@@ -2,14 +2,14 @@ import React, { Component } from "react";
 
 const Friends = props => {
   if (props.friends.length === 0)
-    return <p>You have no friends; search suggestions</p>;
+    return  <div className="in-frienships-bar">You have no friends; search suggestions </div>;
   else {
     return (
-      <div className="friends-wrapper">
+      <div className="in-frienships-bar">
         <div className="friends">
           {props.friends.map(friend => {
             return (
-              <div className="previous-conversations">
+              <div className="info-box-wrapper">
                 <span>{friend.firstname}</span>
                 <span>{friend.lastname}</span>
               </div>
@@ -19,7 +19,7 @@ const Friends = props => {
         <div className="pending-requests">
           {props.pendingRequests.map(pending => {
             return (
-              <div className="previous-conversations">
+              <div className="info-box-wrapper">
                 <span>{pending.id}</span>
               </div>
             );

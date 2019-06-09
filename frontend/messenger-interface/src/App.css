@@ -20,6 +20,8 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* login form */
@@ -82,20 +84,20 @@ body {
 
 /* messenger page  -> header */
 .user-info {
-  height: 10%;
+  height: 5%;
   align-items: center;
 }
 
 /* messenger page -> main   */
 
-.chat-wrapper {
+.main-wrapper {
   display: grid;
   grid-template-columns: 20% 60% 20%;
-  height: 90%;
+  height: 95%;
   width: 100%;
 }
 
-.chat-column {
+.column {
   border: 0.5px lightgray solid;
   overflow-y: hidden;
 }
@@ -117,13 +119,27 @@ body {
   border: 1px #0084ff solid;
 }
 
-.previous-conversations {
-  border: 0.1px lightgray solid;
-  height: 50px;
-}
-
 .conversations-list:hover {
   overflow-y: auto;
+}
+
+/*  messenger page-> main -> friendships container  */
+.friendships-bar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* friends */
+.in-frienships-bar{
+  display: flex;
+  flex-direction: column;
+  border: 0.5px solid rgb(213, 213, 241);
+}
+
+/* suggestions */
+.btn-add-friend{
+  background-color: beige;
+  border: none;
 }
 
 /* messenger page -> main -> current Conversation */
@@ -180,10 +196,12 @@ body {
   right: 0;
 }
 
-/* messenger page -> main -> Sidebar ( info about whom we speak) */
-
-
 /* reusables */
+
+.info-box-wrapper {
+  border: 0.1px lightgray solid;
+  height: 50px;
+}
 
 .form-container{
   margin: 5% auto;
