@@ -3,11 +3,8 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import SubmitButton from '../reusables/SubmitButton'
 
-const RegisterForm = props => {
-  console.log(props)
-  
+const RegisterForm = props => {  
   const [isRegistered, register] = React.useState(false);
-
   const submitRegister = (e) => {
     e.preventDefault();
     axios

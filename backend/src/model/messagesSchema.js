@@ -11,13 +11,14 @@ var Schema = mongoose.Schema;
 var MessagesSchema = new Schema({
   participants: { type: Array, required: true, default: [] },
   messages: {
-    type: array,
+    type: Array,
     required: true,
     default: [],
     of: {
         type: Object
     }
-  }
+  },
+  seen: Boolean
 });
 
 var Messages = mongoose.model("messages", MessagesSchema);

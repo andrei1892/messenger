@@ -1,11 +1,10 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import SubmitButton from '../reusables/SubmitButton'
+import SubmitButton from "../reusables/SubmitButton";
 
 const LoginForm = props => {
   const [isLogged, logging] = React.useState(false);
-
   const logIn = e => {
     e.preventDefault();
     axios
@@ -17,7 +16,7 @@ const LoginForm = props => {
         if (response.data.isValid) {
           alert(response.data.message);
           logging(true);
-          localStorage.setItem('token', response.data.token)
+          localStorage.setItem("token", response.data.token);
           props.getCredentials({ target: { name: "password", value: "" } });
         } else alert(response.data.message);
       })
