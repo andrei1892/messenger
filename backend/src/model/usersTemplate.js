@@ -36,7 +36,8 @@ var UserSchema = new Schema({
       require: true
     }
   },
-  last_activity:{
+  conversations: { type: Array, required: true, default: [] },
+  last_activity: {
     type: Date,
     required: true,
     default: Date.now()
