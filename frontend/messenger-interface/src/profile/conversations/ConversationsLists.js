@@ -7,8 +7,8 @@ const GetConversations = (props) => {
             className="search-conversations-list"
             placeholder="Search Messages"
           />
-          {props.messages.map(x => (
-            <div className="info-box-wrapper">{x}</div>
+          {props.messages.map((x,key) => (
+            <div key={key} className="info-box-wrapper">{x}</div>
           ))}
         </nav>
       )
