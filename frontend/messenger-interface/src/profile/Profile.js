@@ -62,7 +62,7 @@ class Profile extends Component {
           token: localStorage.getItem("token")
         }
       })
-      .then()
+      .then(conversations => { console.log(conversations)})
       .catch(err => console.log(`get conv - eroare la catch: ${err}`));
 
     //  axios.get('http:/localhost:4000/user/search_friends', {
@@ -92,12 +92,12 @@ class Profile extends Component {
   };
 
   acceptRequest = ev => {
-    console.log(ev.target);
+    // console.log(ev.target.parentNode.id);
     axios
       .post(
         "http://localhost:4000/accept_request",
         {
-          friend: "id"
+          friend: ev.target.parentNode.id
         },
         {
           headers: {

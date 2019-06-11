@@ -85,7 +85,7 @@ body {
 /* messenger page  -> header */
 .user-info {
   height: 5%;
-  align-items: center;
+  display: flex;
 }
 
 /* messenger page -> main   */
@@ -140,6 +140,9 @@ body {
 .btn-add-friend{
   background-color: beige;
   border: none;
+  border-radius: 15%;
+  cursor: pointer;
+  float: right;
 }
 
 /* messenger page -> main -> current Conversation */

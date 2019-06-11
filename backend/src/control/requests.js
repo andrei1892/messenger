@@ -4,6 +4,16 @@ const ObjectID = require("mongodb").ObjectID;
 const MESSAGES = require("../model/messagesSchema");
 const CONFIG = require("../config");
 
+const identifier = id => {
+  let get_id = new ObjectID(id);
+  return USER.findOne({ _id: get_id }).then(response => {
+    if (response === null) return null;
+    else return response;
+  });
+};
+
+// daca poate sa imi explice asnyc/await;
+
 const register = (req, res) => {
   if (
     req.body.firstname &&
@@ -90,16 +100,33 @@ const get_friends = (req, res) => {
     if (err) {
       return res.send(403);
     }
-    let findUser = { username: payload.username };
-    USER.findOne(findUser)
-      .then(response => {
-        if (response === null)
-          res.status(404).json({ message: "No user found" });
-        else {
-          res.status(200).json({ friends: response.friends , pending: response.requests_to_confirm });
-        }
-      })
-      .catch(err => res.status(404).json({ message: err }));
+    //let findUser = { username: payload.username };
+    identifier(payload.id).then(user => {
+      if (user) {
+        USER.find({ _id: { $in: user.requests_to_confirm } }).then(pendings => {
+          USER.find({ _id: { $in: user.friends } }).then(friends => {
+            res.status(200).json({
+              friends: friends.map(friend => {
+                return {
+                  firstname: friend.firstname,
+                  lastname: friend.lastname,
+                  id: friend._id.toString()
+                };
+              }), //user.friends, // response.friends,
+              pending: pendings.map(user => {
+                return {
+                  firstname: user.firstname,
+                  lastname: user.lastname,
+                  id: user._id.toString()
+                };
+              })
+            });
+          });
+        });
+      } else {
+        res.sendStatus(404);
+      }
+    });
   });
 };
 
@@ -116,6 +143,9 @@ const get_friends_suggestions = (req, res) => {
           {
             username: {
               $nin: [...response.friends, payload.username]
+            },
+            _id: {
+              $nin: [...response.requests_to_confirm, ...response.friends]
             }
           },
           { firstname: 1, lastname: 1 }
@@ -129,13 +159,23 @@ const get_friends_suggestions = (req, res) => {
   });
 };
 
-const get_conversations_list = (req, res) => {
+const get_conversations = (req, res) => {
   jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
     if (err) {
       return res.send(403);
     }
-    let findUser = { username: payload.username };
-    USER.findOne(findUser).then();
+    //USER.findOne({ username: payload.username }).then(user => {
+      MESSAGES.find(
+        {
+          participants: {
+            $in: payload.id.toString()
+          }
+        },
+        { participants: 1 }
+      ).then(conversations => {
+        console.log(conversations);
+      });
+   // });
   });
 };
 
@@ -154,13 +194,13 @@ const send_friend_request = (req, res) => {
       else {
         if (
           !senderResponse.waiting_for_confirmation.find(
-            r_Id => r_Id.toString() === rec_id.toString()
+            id => id.toString() === rec_id.toString()
           ) &&
           !senderResponse.friends.find(
-            r_Id => r_Id.toString() === rec_id.toString()
+            id => id.toString() === rec_id.toString()
           ) &&
           !senderResponse.requests_to_confirm.find(
-            r_Id => r_Id.toString() === rec_id.toString()
+            id => id.toString() === rec_id.toString()
           )
         ) {
           senderResponse.waiting_for_confirmation.push(rec_id.toString());
@@ -186,15 +226,18 @@ const send_friend_request = (req, res) => {
                   sender => sender === payload.id.toString()
                 )
               ) {
-                receiverResponse.requests_to_confirm.push(
-                  payload.id.toString()
-                );
+                receiverResponse.requests_to_confirm.push(payload.id);
                 receiverResponse.save((err, result) => {
                   if (err) res.status(400).json({ message: err });
                   else res.status(200).json({ message: "Friend Request Sent" });
                 });
                 console.log("friend request received");
-              } else console.log("request was already received");
+              } else {
+                console.log("request was already received");
+                res
+                  .status(400)
+                  .json({ message: "Friend request was already sent" });
+              }
             }
           });
         } else {
@@ -214,21 +257,40 @@ const search_friends = (req, res) => {};
 
 const accept_friend_request = (req, res) => {
   jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
-    if (err) {
-      return res.send(403);
-    }
+    if (err) return res.send(403);
 
-    let newConversation = new MESSAGES({
-      participants: [payload.id.toString(), req.body.friend.toString() ],
-      seen: false
-    });
+    USER.findOne({ username: payload.username }).then(user => {
+      if (user === null) res.status(404).json({ message: "No user found" });
+      else {
+        user.requests_to_confirm = user.requests_to_confirm.filter(
+          x => x != req.body.friend
+        );
+        user.friends.push(req.body.friend);
+        user.save();
 
-    newConversation.save(err => {
-      if (err) {
-        console.log(err);
-        res.status(409).json({ accepted: false, message: err });
-      } else
-        res.status(200).json({ accepted: true, message: "Request Accepted" });
+        identifier(req.body.friend).then(friend => {
+          friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
+            x => x != payload.id
+          );
+          friend.friends.push(payload.id);
+          friend.save();
+        });
+
+        let newConversation = new MESSAGES({
+          participants: [payload.id.toString(), req.body.friend.toString()],
+          seen: false
+        });
+
+        newConversation.save(err => {
+          if (err) {
+            console.log(err);
+            res.status(409).json({ accepted: false, message: err });
+          } else
+            res
+              .status(200)
+              .json({ accepted: true, message: "Request Accepted" });
+        });
+      }
     });
   });
 };
@@ -237,18 +299,16 @@ const get_conversation = (req, res) => {};
 
 const send_seen_event = (req, res) => {};
 
-const send_message = (req, res) => {  
+const send_message = (req, res) => {
   jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
     if (err) {
       return res.send(403);
     }
 
-    MESSAGES.findOne( { participants: {$in: payload.id} }  )
-    .then(response => {
-        console.log(response)
-    })
-
-  })
+    MESSAGES.findOne({ participants: { $in: payload.id } }).then(response => {
+      console.log(response);
+    });
+  });
 };
 
 const check_activity = (req, res) => {};
@@ -259,7 +319,7 @@ module.exports = {
   get_my_data,
   get_friends,
   get_friends_suggestions,
-  get_conversations_list,
+  get_conversations,
   get_friends_request,
   search_friends,
   send_friend_request,

@@ -9,14 +9,22 @@ const CONFIG = require("../config");
 var Schema = mongoose.Schema;
 
 var MessagesSchema = new Schema({
-  participants: { type: Array, required: true, default: [] },
+  participants: { type: Array, required: true, default: [], of: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'users'
+  }},
   messages: {
     type: Array,
     required: true,
     default: [],
     of: {
-        type: Object
+      type: Object
     }
+  },
+  last_update: {
+    type: Date,
+    required: true,
+    default: Date.now()
   },
   seen: Boolean
 });
