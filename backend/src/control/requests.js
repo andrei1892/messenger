@@ -104,7 +104,7 @@ const get_friends = (req, res) => {
     identifier(payload.id).then(user => {
       if (user) {
         USER.find({ _id: { $in: user.requests_to_confirm } }).then(pendings => {
-          USER.find({ _id: { $in: user.friends } }).then(friends => {
+          USER.find({ _id: { $in: user.friends.map(x => x.friend) } }).then(friends => {
             res.status(200).json({
               friends: friends.map(friend => {
                 return {
@@ -141,11 +141,8 @@ const get_friends_suggestions = (req, res) => {
       else {
         USER.find(
           {
-            username: {
-              $nin: [...response.friends, payload.username]
-            },
             _id: {
-              $nin: [...response.requests_to_confirm, ...response.friends]
+              $nin: [...response.requests_to_confirm, response._id, ...response.friends.map(x => x.friend)]
             }
           },
           { firstname: 1, lastname: 1 }
@@ -262,37 +259,57 @@ const accept_friend_request = (req, res) => {
     USER.findOne({ username: payload.username }).then(user => {
       if (user === null) res.status(404).json({ message: "No user found" });
       else {
-        user.requests_to_confirm = user.requests_to_confirm.filter(
-          x => x != req.body.friend
-        );
-        user.friends.push(req.body.friend);
-        user.save();
-
+        
         identifier(req.body.friend).then(friend => {
+         console.log(`cele 2 id-uri: ${user._id} si ${friend._id}`)
+         console.log(`friend is ${friend}`);
+         console.log(`eu : ${user}`) 
+
+         let newConversation = new MESSAGES({
+            participants: [user._id, friend._id],
+            seen: false
+          });
+         
+          newConversation.save();
+          
+          console.log(newConversation)
+
           friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
             x => x != payload.id
           );
-          friend.friends.push(payload.id);
+          friend.friends.push(
+            {
+              friend: user._id,
+              conversation: newConversation._id
+            }
+          );
           friend.save();
-        });
+          
+          
+          user.requests_to_confirm = user.requests_to_confirm.filter(
+            x => x != req.body.friend
+            );
+            user.friends.push({
+              friend: friend._id,
+              conversation: newConversation._id
+            });
 
-        let newConversation = new MESSAGES({
-          participants: [payload.id.toString(), req.body.friend.toString()],
-          seen: false
-        });
-
-        newConversation.save(err => {
-          if (err) {
-            console.log(err);
-            res.status(409).json({ accepted: false, message: err });
-          } else
-            res
+            user.save((err,result) => {
+              if (err) {
+                console.log(err);
+                res.status(409).json({ accepted: false, message: err });
+              } else
+              res
               .status(200)
               .json({ accepted: true, message: "Request Accepted" });
+            });
+            
+            
+          });
+            
+          }
         });
-      }
-    });
-  });
+      });
 };
 
 const get_conversation = (req, res) => {};
