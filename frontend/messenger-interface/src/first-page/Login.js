@@ -15,9 +15,9 @@ const LoginForm = props => {
       .then(response => {
         if (response.data.isValid) {
           alert(response.data.message);
-          logging(true);
           localStorage.setItem("token", response.data.token);
           props.getCredentials({ target: { name: "password", value: "" } });
+          logging(true);
         } else alert(response.data.message);
       })
       .catch(err => console.log(err));

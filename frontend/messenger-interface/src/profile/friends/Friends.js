@@ -16,7 +16,7 @@ const Friends = props => {
           {props.friends.map(friend => {
             return (
               <div className="info-box-wrapper">
-                <span>{friend.firstname}</span>
+                <span>{friend.firstname}</span>{' '}
                 <span>{friend.lastname}</span>
               </div>
             );
@@ -27,7 +27,7 @@ const Friends = props => {
           {props.pendingRequests.map(pending => {
             return (
               <div className="info-box-wrapper" id={pending.id}>
-                <span>{pending.firstname}</span>
+                <span>{pending.firstname}</span>{' '}
                 <span>{pending.lastname}</span>
                 <button
                   className="btn btn-add-friend"

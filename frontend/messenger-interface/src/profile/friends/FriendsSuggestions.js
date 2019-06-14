@@ -7,7 +7,7 @@ const FriendsSuggestions = (props) => {
             props.suggestions.map(suggestion => {
                 return(
                     <div className="info-box-wrapper" id={suggestion._id} >
-                       <span>{suggestion.firstname}</span>{' '}  
+                       <span>{suggestion.firstname}</span>{'  '}  
                        <span>{suggestion.lastname}</span>
                        <button className="btn btn-add-friend" onClick={props.sendFriendRequest}>Add Friend</button>
                     </div>

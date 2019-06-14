@@ -126,7 +126,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className="page-container container-fluid">
+      <div className="page-container">
         <UserInfo data={this.state.myData} />
         <main className="main-wrapper ">
           <GetConversations messages={this.state.messages} />
