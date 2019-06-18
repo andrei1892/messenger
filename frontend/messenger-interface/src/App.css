@@ -123,6 +123,13 @@ body {
   overflow-y: auto;
 }
 
+.last-conversation{
+  overflow: hidden;
+  font-size: 80%;
+}
+
+
+
 /*  messenger page-> main -> friendships container  */
 .friendships-bar-container {
   display: flex;

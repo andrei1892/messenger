@@ -14,7 +14,12 @@ class Profile extends Component {
       friends: [],
       pendingRequests: [],
       suggestions: [],
-      messages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      messages: [1, 2, 3, 4],
+      conversations: [],
+      crtConversation: {
+        isOn: false
+      },
+      message: ""
     };
   }
 
@@ -26,7 +31,6 @@ class Profile extends Component {
         }
       })
       .then(response => {
-        console.log(response.data);
         this.setState({ myData: response.data });
       })
       .catch(err => console.log(`get my data - eroare la catch: ${err}`));
@@ -62,7 +66,9 @@ class Profile extends Component {
           token: localStorage.getItem("token")
         }
       })
-      .then(conversations => { console.log(conversations)})
+      .then(response => {
+        this.setState({ conversations: response.data.conversations });
+      })
       .catch(err => console.log(`get conv - eroare la catch: ${err}`));
 
     //  axios.get('http:/localhost:4000/user/search_friends', {
@@ -107,8 +113,8 @@ class Profile extends Component {
       )
       .then(response => console.log(response))
       .catch(err => console.log(err));
-    
-      axios
+
+    axios
       .get("http://localhost:4000/user/get_friends", {
         headers: {
           token: localStorage.getItem("token")
@@ -121,7 +127,48 @@ class Profile extends Component {
         });
       })
       .catch(err => console.log(`get fr - eroare la catch: ${err}`));
-    
+  };
+
+  getConversation = ev => {
+    axios
+      .get("http://localhost:4000/user/get_conversation?id=" + ev.target.id, {
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+      .then(response => {
+        this.setState(() => {
+          let crtConversation = response.data.conversation;
+          crtConversation.isOn = true;
+          return {
+            crtConversation: crtConversation
+          };
+        });
+      });
+  };
+
+  messageContainer = ev => {
+    //console.log(ev.target.value)
+    this.setState({ message: ev.target.value });
+  };
+
+  sendMessage = ev => {
+    console.dir(ev.target);
+    console.log(ev.target);
+    axios
+      .post(
+        "http://localhost:4000/send_message",
+        {
+          message: this.state.message
+        },
+        {
+          headers: {
+            token: localStorage.getItem("token")
+          }
+        }
+      )
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -129,8 +176,16 @@ class Profile extends Component {
       <div className="page-container">
         <UserInfo data={this.state.myData} />
         <main className="main-wrapper ">
-          <GetConversations messages={this.state.messages} />
-          <CurrentConversation />
+          <GetConversations
+            messages={this.state.messages}
+            conversations={this.state.conversations}
+            getConversation={this.getConversation}
+          />
+          <CurrentConversation
+            crtConversation={this.state.crtConversation}
+            messageContainer={this.messageContainer}
+            sendMessage={this.sendMessage}
+          />
           <FriendshipsBar
             friends={this.state.friends}
             pendingRequests={this.state.pendingRequests}
