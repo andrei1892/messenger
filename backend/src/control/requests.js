@@ -104,24 +104,26 @@ const get_friends = (req, res) => {
     identifier(payload.id).then(user => {
       if (user) {
         USER.find({ _id: { $in: user.requests_to_confirm } }).then(pendings => {
-          USER.find({ _id: { $in: user.friends.map(x => x.friend) } }).then(friends => {
-            res.status(200).json({
-              friends: friends.map(friend => {
-                return {
-                  firstname: friend.firstname,
-                  lastname: friend.lastname,
-                  id: friend._id.toString()
-                };
-              }), //user.friends, // response.friends,
-              pending: pendings.map(user => {
-                return {
-                  firstname: user.firstname,
-                  lastname: user.lastname,
-                  id: user._id.toString()
-                };
-              })
-            });
-          });
+          USER.find({ _id: { $in: user.friends.map(x => x.friend) } }).then(
+            friends => {
+              res.status(200).json({
+                friends: friends.map(friend => {
+                  return {
+                    firstname: friend.firstname,
+                    lastname: friend.lastname,
+                    id: friend._id.toString()
+                  };
+                }), //user.friends, // response.friends,
+                pending: pendings.map(user => {
+                  return {
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    id: user._id.toString()
+                  };
+                })
+              });
+            }
+          );
         });
       } else {
         res.sendStatus(404);
@@ -142,7 +144,11 @@ const get_friends_suggestions = (req, res) => {
         USER.find(
           {
             _id: {
-              $nin: [...response.requests_to_confirm, response._id, ...response.friends.map(x => x.friend)]
+              $nin: [
+                ...response.requests_to_confirm,
+                response._id,
+                ...response.friends.map(x => x.friend)
+              ]
             }
           },
           { firstname: 1, lastname: 1 }
@@ -161,18 +167,27 @@ const get_conversations = (req, res) => {
     if (err) {
       return res.send(403);
     }
-    //USER.findOne({ username: payload.username }).then(user => {
-      MESSAGES.find(
-        {
-          participants: {
-            $in: payload.id.toString()
+    identifier(payload.id).then(user => {
+      MESSAGES.find({
+        participants: {
+          $in: user._id 
+        }
+      }).then(conversations => {
+        conversations = conversations.map(conv => {
+          if (conv.messages.length - 1 < 0) {
+            conv.messages = [
+              { msg_content: "You've got a new conversation. Say Hi" }
+            ];
+          } else {
+            conv.messages = conv.messages[conv.messages.length - 1];
           }
-        },
-        { participants: 1 }
-      ).then(conversations => {
-        console.log(conversations);
+          return conv;
+        });
+        //console.log(JSON.stringify(conversations));
+        res.status(200).json({ conversations: conversations });
       });
-   // });
+    });
+    // });
   });
 };
 
@@ -259,60 +274,59 @@ const accept_friend_request = (req, res) => {
     USER.findOne({ username: payload.username }).then(user => {
       if (user === null) res.status(404).json({ message: "No user found" });
       else {
-        
         identifier(req.body.friend).then(friend => {
-         console.log(`cele 2 id-uri: ${user._id} si ${friend._id}`)
-         console.log(`friend is ${friend}`);
-         console.log(`eu : ${user}`) 
+          console.log(`cele 2 id-uri: ${user._id} si ${friend._id}`);
+          console.log(`friend is ${friend}`);
+          console.log(`eu : ${user}`);
 
-         let newConversation = new MESSAGES({
+          let newConversation = new MESSAGES({
             participants: [user._id, friend._id],
             seen: false
           });
-         
+
           newConversation.save();
-          
-          console.log(newConversation)
+
+          console.log(newConversation);
 
           friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
             x => x != payload.id
           );
-          friend.friends.push(
-            {
-              friend: user._id,
-              conversation: newConversation._id
-            }
-          );
+          friend.friends.push({
+            friend: user._id,
+            conversation: newConversation._id
+          });
           friend.save();
-          
-          
+
           user.requests_to_confirm = user.requests_to_confirm.filter(
             x => x != req.body.friend
-            );
-            user.friends.push({
-              friend: friend._id,
-              conversation: newConversation._id
-            });
-
-            user.save((err,result) => {
-              if (err) {
-                console.log(err);
-                res.status(409).json({ accepted: false, message: err });
-              } else
-              res
-              .status(200)
-              .json({ accepted: true, message: "Request Accepted" });
-            });
-            
-            
+          );
+          user.friends.push({
+            friend: friend._id,
+            conversation: newConversation._id
           });
-            
-          }
+
+          user.save((err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(409).json({ accepted: false, message: err });
+            } else
+              res
+                .status(200)
+                .json({ accepted: true, message: "Request Accepted" });
+          });
         });
-      });
+      }
+    });
+  });
 };
 
-const get_conversation = (req, res) => {};
+const get_conversation = (req, res) => {
+  console.log(req.query.id);
+  let convId = new ObjectID(req.query.id);
+  MESSAGES.findOne({_id: convId},{participants: 0})
+  .then(response => res.status(200).json({conversation: response}) )
+  .catch( err => res.status(404).json({message:"No conversation found"})  )
+};
 
 const send_seen_event = (req, res) => {};
 
@@ -321,7 +335,8 @@ const send_message = (req, res) => {
     if (err) {
       return res.send(403);
     }
-
+    console.log(payload.id)
+    let id = new ObjectID(payload.id)
     MESSAGES.findOne({ participants: { $in: payload.id } }).then(response => {
       console.log(response);
     });

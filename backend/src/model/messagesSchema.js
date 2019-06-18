@@ -17,7 +17,8 @@ var MessagesSchema = new Schema({
     required: true,
     default: [],
     of: {
-      type: Object
+       sender: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+       msg_content: String
     }
   },
   last_update: {

@@ -13,6 +13,7 @@ router.get("/user/get_friends", REQUESTS.get_friends);
 router.get("/user/get_friends_suggestions", REQUESTS.get_friends_suggestions)
 router.get("/user/get_conversations", REQUESTS.get_conversations);
 router.get("/user/search_friends", REQUESTS.search_friends);
+router.get("/user/get_conversation", REQUESTS.get_conversation )
 
 router.post("/send_friend_request", REQUESTS.send_friend_request);
 router.post("/accept_request", REQUESTS.accept_friend_request )
