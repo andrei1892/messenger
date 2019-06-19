@@ -19,11 +19,6 @@ var UserSchema = new Schema({
     friend: {type: Schema.Types.ObjectId, ref: 'user'},
     conversation:  {type: Schema.Types.ObjectId, ref: 'messages'}
   }],
-  // { type: Array, required: true, default: [],
-  // of:{
-  //   type: Object,
-  //   require: true
-  // } },  // add coversation id with friend id
   requests_to_confirm: {
     type: Array,
     required: true,
@@ -44,7 +39,6 @@ var UserSchema = new Schema({
       require: true
     }
   },
-  //conversations: { type: Array, required: true, default: [] },
   last_activity: {
     type: Date,
     required: true,
@@ -55,51 +49,3 @@ var UserSchema = new Schema({
 var User = mongoose.model("users", UserSchema);
 
 module.exports = User;
-
-/*
-
-var config = {
-    //La fiecare autentificare cu succes se adauga o cheie si id-ul utilizatorului
-    cheieDeAutorizarePentruUtilizatoriLogati: [
-        {id_ul_utilizatorului,
-        cheia_pe_care_a_primit_o}
-    ],
-    users: [{
-            id,
-            status,
-            ultima_data_logat,
-            personalData: {
-                nume,
-                prenume,
-                telefon,
-                link_poza,
-                email
-            },
-            authData: {
-                username,
-                parola
-            },
-            prieteni: [
-                id
-            ],
-            cerere_de_prietenie: [
-                id
-            ],
-            conversatii: [{
-                    cu_cine_id,
-                    data_ultim_mesaj,
-                    culoare_conversatie,
-                    este_citita,
-                    messaje: [{
-                            esteMesajulDeLaMine: [false || true],
-                            mesajul,
-                            data_mesajului,
-                        }
-                    ]
-                }
-            ]
-        }
-    ],
-}
-
-*/
