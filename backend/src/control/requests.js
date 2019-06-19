@@ -87,7 +87,8 @@ const get_my_data = (req, res) => {
         } else {
           res.status(200).json({
             firstname: response.firstname,
-            lastname: response.lastname
+            lastname: response.lastname,
+            id: response._id
           });
         }
       })
@@ -261,13 +262,9 @@ const send_friend_request = (req, res) => {
   });
 };
 
-const get_friends_request = (req, res) => {};
-
 const search_friends = (req, res) => {};
 
-// const /* [accept,decline]_ */frient_request;
-
-const accept_friend_request = (req, res) => {
+const accept_friend_request = (req, res) => { // adaugat si decline
   jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
     if (err) return res.send(403);
 
@@ -275,9 +272,9 @@ const accept_friend_request = (req, res) => {
       if (user === null) res.status(404).json({ message: "No user found" });
       else {
         identifier(req.body.friend).then(friend => {
-          console.log(`cele 2 id-uri: ${user._id} si ${friend._id}`);
-          console.log(`friend is ${friend}`);
-          console.log(`eu : ${user}`);
+          // console.log(`cele 2 id-uri: ${user._id} si ${friend._id}`);
+          // console.log(`friend is ${friend}`);
+          // console.log(`eu : ${user}`);
 
           let newConversation = new MESSAGES({
             participants: [user._id, friend._id],
@@ -323,7 +320,7 @@ const accept_friend_request = (req, res) => {
 const get_conversation = (req, res) => {
   console.log(req.query.id);
   let convId = new ObjectID(req.query.id);
-  MESSAGES.findOne({_id: convId},{participants: 0})
+  MESSAGES.findOne({_id: convId}) // {participants: 0}
   .then(response => res.status(200).json({conversation: response}) )
   .catch( err => res.status(404).json({message:"No conversation found"})  )
 };
@@ -335,10 +332,20 @@ const send_message = (req, res) => {
     if (err) {
       return res.send(403);
     }
-    console.log(payload.id)
-    let id = new ObjectID(payload.id)
-    MESSAGES.findOne({ participants: { $in: payload.id } }).then(response => {
-      console.log(response);
+    console.log(req.body)
+    let convId = new ObjectID(req.body.conversationId);
+    let userId = new ObjectID(payload.id)
+    MESSAGES.findOne({ _id: { $in: convId } })
+    .then(response => {
+      response.messages.push({sender: userId, msg_content: req.body.message })
+      response.last_update = Date.now();
+      response.save((err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(409).json({message: err });
+        } else
+          res.status(200)
+      });
     });
   });
 };
@@ -352,7 +359,6 @@ module.exports = {
   get_friends,
   get_friends_suggestions,
   get_conversations,
-  get_friends_request,
   search_friends,
   send_friend_request,
   accept_friend_request,
