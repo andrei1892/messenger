@@ -16,7 +16,8 @@ const Friends = props => {
           {props.friends.map(friend => {
             return (
               <div className="info-box-wrapper">
-                <span>{friend.firstname}</span>{' '}
+                <span>{friend.firstname}</span>
+                <span>{' '}</span>
                 <span>{friend.lastname}</span>
               </div>
             );

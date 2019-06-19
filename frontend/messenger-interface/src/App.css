@@ -92,23 +92,20 @@ body {
 
 .main-wrapper {
   display: grid;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 25% 55% 20%;
   height: 95%;
   width: 100%;
 }
 
-.column {
-  border: 0.5px lightgray solid;
-  overflow-y: hidden;
-}
 
 /* messenger page -> main -> Conversation List ( history )     */
 
 .conversations-list {
   overflow: hidden;
+  text-align: center;
 }
 .search-conversations-list {
-  width: 200px;
+  width: 80%;
   margin: 5px;
   border: 1px lightgray solid;
   border-radius: 15px;
@@ -127,8 +124,6 @@ body {
   overflow: hidden;
   font-size: 80%;
 }
-
-
 
 /*  messenger page-> main -> friendships container  */
 .friendships-bar-container {
@@ -169,18 +164,23 @@ body {
 
 .messaged-received,
 .messaged-sent {
-  width: 50%;
+  max-width: 50%;
+  margin: 2px;
   padding: 5px;
+  border: 1px solid;
+  border-radius: 35%;
 }
 
 .messaged-received {
   align-self: flex-start;
   text-align: left;
+  background-color: rgb(206, 199, 199);
 }
 
 .messaged-sent {
   align-self: flex-end;
   text-align: right;
+  background-color: rgb(89, 205, 243);
 }
 
 .chat-send {
@@ -207,10 +207,17 @@ body {
 }
 
 /* reusables */
+  .column {
+    border: 0.5px lightgray solid;
+    overflow-y: hidden;
+  }
 
 .info-box-wrapper {
   border: 0.1px lightgray solid;
   height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .form-container{

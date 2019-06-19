@@ -1,7 +1,6 @@
 import React from 'react'
 
 const GetConversations = (props) => {
-  //console.log(props)
     return (
         <nav className="conversations-list column">
           <input

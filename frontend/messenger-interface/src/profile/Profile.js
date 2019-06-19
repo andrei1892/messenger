@@ -14,13 +14,13 @@ class Profile extends Component {
       friends: [],
       pendingRequests: [],
       suggestions: [],
-      messages: [1, 2, 3, 4],
       conversations: [],
+      msg:'',
       crtConversation: {
         isOn: false
-      },
-      message: ""
+      }
     };
+    this.textarea = React.createRef();
   }
 
   componentDidMount() {
@@ -137,9 +137,10 @@ class Profile extends Component {
         }
       })
       .then(response => {
-        this.setState(() => {
+        this.setState((prevstate) => {
           let crtConversation = response.data.conversation;
           crtConversation.isOn = true;
+          crtConversation.userId = prevstate.myData.id
           return {
             crtConversation: crtConversation
           };
@@ -149,17 +150,20 @@ class Profile extends Component {
 
   messageContainer = ev => {
     //console.log(ev.target.value)
-    this.setState({ message: ev.target.value });
+    this.setState({ msg: ev.target.value });
   };
 
   sendMessage = ev => {
-    console.dir(ev.target);
-    console.log(ev.target);
+    //console.dir(ev.target);
+    console.log(this.state.msg)
+    if( this.state.msg === '' ) { return null; }
+    console.log(ev.target.offsetParent.offsetParent.id);
     axios
       .post(
         "http://localhost:4000/send_message",
         {
-          message: this.state.message
+          message: this.state.msg,
+          conversationId: ev.target.offsetParent.offsetParent.id
         },
         {
           headers: {
@@ -167,8 +171,12 @@ class Profile extends Component {
           }
         }
       )
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response)
+        this.setState({msg: ''})
+      })
       .catch(err => console.log(err));
+    
   };
 
   render() {
@@ -177,7 +185,6 @@ class Profile extends Component {
         <UserInfo data={this.state.myData} />
         <main className="main-wrapper ">
           <GetConversations
-            messages={this.state.messages}
             conversations={this.state.conversations}
             getConversation={this.getConversation}
           />
