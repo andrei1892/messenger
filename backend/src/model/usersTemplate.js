@@ -15,16 +15,21 @@ var UserSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   isAdmin: { type: Boolean, default: false },
-  friends: [{
-    friend: {type: Schema.Types.ObjectId, ref: 'user'},
-    conversation:  {type: Schema.Types.ObjectId, ref: 'messages'}
-  }],
+  friends: {
+    type: Array,
+    required: true,
+    default: [],
+    of: {
+      friend: { type: Schema.Types.ObjectId, ref: "user" },
+      conversation: { type: Schema.Types.ObjectId, ref: "messages" }
+    }
+  },
   requests_to_confirm: {
     type: Array,
     required: true,
     default: [],
     of: {
-      type:  {type: Schema.Types.ObjectId, ref: 'user'},
+      type: { type: Schema.Types.ObjectId, ref: "user" },
       unique: true,
       require: true
     }
@@ -34,7 +39,7 @@ var UserSchema = new Schema({
     required: true,
     default: [],
     of: {
-      type: {type: Schema.Types.ObjectId, ref: 'user'},
+      type: { type: Schema.Types.ObjectId, ref: "user" },
       unique: true,
       require: true
     }
