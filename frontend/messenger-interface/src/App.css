@@ -123,6 +123,7 @@ body {
 .last-conversation{
   overflow: hidden;
   font-size: 80%;
+  justify-content: center;
 }
 
 /*  messenger page-> main -> friendships container  */
@@ -142,6 +143,7 @@ body {
 .btn-add-friend{
   background-color: beige;
   border: none;
+  font-size: 80%;
   border-radius: 15%;
   cursor: pointer;
   float: right;
@@ -216,7 +218,6 @@ body {
   border: 0.1px lightgray solid;
   height: 50px;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 

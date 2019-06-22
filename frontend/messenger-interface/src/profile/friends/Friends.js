@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 const Friends = props => {
   if (
@@ -19,9 +19,9 @@ const Friends = props => {
           {props.friends.map(friend => {
             return (
               <div className="info-box-wrapper">
-                <span>{friend.firstname}</span>
+                <span className="px-1">{friend.firstname}</span>
                 <span> </span>
-                <span>{friend.lastname}</span>
+                <span className="px-1">{friend.lastname}</span>
               </div>
             );
           })}
@@ -33,7 +33,7 @@ const Friends = props => {
               {props.pendingFrReq.map((pending, key) => {
                 return (
                   <div key={key} className="info-box-wrapper" id={pending.id}>
-                    <span>{pending.firstname}</span>{" "}
+                    <span className="px-1">{pending.firstname}</span>{" "}
                     <span>{pending.lastname}</span>
                     <button
                       className="btn btn-add-friend"
