@@ -168,7 +168,7 @@ body {
   margin: 2px;
   padding: 5px;
   border: 1px solid;
-  border-radius: 35%;
+  border-radius: 25% / 25%;
 }
 
 .messaged-received {

@@ -12,15 +12,15 @@ class Profile extends Component {
     this.state = {
       myData: {},
       friends: [],
-      pendingRequests: [],
+      pendingFrReq: [],
+      awaitingFrRes: [],
       suggestions: [],
       conversations: [],
-      msg:'',
+      msg: "",
       crtConversation: {
         isOn: false
       }
     };
-    this.textarea = React.createRef();
   }
 
   componentDidMount() {
@@ -42,9 +42,11 @@ class Profile extends Component {
         }
       })
       .then(response => {
+        console.log(response);
         this.setState({
           friends: response.data.friends,
-          pendingRequests: response.data.pending
+          pendingFrReq: response.data.pending,
+          awaitingFrRes: response.data.awaiting
         });
       })
       .catch(err => console.log(`get fr - eroare la catch: ${err}`));
@@ -67,6 +69,7 @@ class Profile extends Component {
         }
       })
       .then(response => {
+        console.log(response)
         this.setState({ conversations: response.data.conversations });
       })
       .catch(err => console.log(`get conv - eroare la catch: ${err}`));
@@ -93,7 +96,22 @@ class Profile extends Component {
           }
         }
       )
-      .then(response => console.log(response))
+      .then(response => {
+        axios
+          .get("http://localhost:4000/user/get_friends", {
+            headers: {
+              token: localStorage.getItem("token")
+            }
+          })
+          .then(response => {
+            this.setState({
+              friends: response.data.friends,
+              pendingFrReq: response.data.pending,
+              awaitingFrRes: response.data.awaiting
+            });
+          })
+          .catch(err => console.log(`get fr - eroare la catch: ${err}`));
+      })
       .catch(err => console.log(err));
   };
 
@@ -111,22 +129,23 @@ class Profile extends Component {
           }
         }
       )
-      .then(response => console.log(response))
-      .catch(err => console.log(err));
-
-    axios
-      .get("http://localhost:4000/user/get_friends", {
-        headers: {
-          token: localStorage.getItem("token")
-        }
-      })
       .then(response => {
-        this.setState({
-          friends: response.data.friends,
-          pendingRequests: response.data.pending
-        });
+        axios
+          .get("http://localhost:4000/user/get_friends", {
+            headers: {
+              token: localStorage.getItem("token")
+            }
+          })
+          .then(response => {
+            this.setState({
+              friends: response.data.friends,
+              pendingFrReq: response.data.pending,
+              awaitingFrRes: response.data.awaiting
+            });
+          })
+          .catch(err => console.log(`get fr - eroare la catch: ${err}`));
       })
-      .catch(err => console.log(`get fr - eroare la catch: ${err}`));
+      .catch(err => console.log(err));
   };
 
   getConversation = ev => {
@@ -137,10 +156,10 @@ class Profile extends Component {
         }
       })
       .then(response => {
-        this.setState((prevstate) => {
+        this.setState(prevstate => {
           let crtConversation = response.data.conversation;
           crtConversation.isOn = true;
-          crtConversation.userId = prevstate.myData.id
+          crtConversation.userId = prevstate.myData.id;
           return {
             crtConversation: crtConversation
           };
@@ -155,8 +174,10 @@ class Profile extends Component {
 
   sendMessage = ev => {
     //console.dir(ev.target);
-    console.log(this.state.msg)
-    if( this.state.msg === '' ) { return null; }
+    console.log(this.state.msg);
+    if (this.state.msg === "") {
+      return null;
+    }
     console.log(ev.target.offsetParent.offsetParent.id);
     axios
       .post(
@@ -172,11 +193,10 @@ class Profile extends Component {
         }
       )
       .then(response => {
-        console.log(response)
-        this.setState({msg: ''})
+        console.log(response);
+        this.setState({ msg: "" });
       })
       .catch(err => console.log(err));
-    
   };
 
   render() {
@@ -192,10 +212,12 @@ class Profile extends Component {
             crtConversation={this.state.crtConversation}
             messageContainer={this.messageContainer}
             sendMessage={this.sendMessage}
+            msg={this.state.msg}
           />
           <FriendshipsBar
             friends={this.state.friends}
-            pendingRequests={this.state.pendingRequests}
+            pendingFrReq={this.state.pendingFrReq}
+            awaitingFrRes={this.state.awaitingFrRes}
             suggestions={this.state.suggestions}
             sendFriendRequest={this.sendFriendRequest}
             acceptRequest={this.acceptRequest}

@@ -13,7 +13,8 @@ class Friendships extends Component {
       <div className="friendships-bar-container column">
         <Friends
           friends={this.props.friends}
-          pendingRequests={this.props.pendingRequests}
+          pendingFrReq={this.props.pendingFrReq}
+          awaitingFrRes={this.props.awaitingFrRes}
           acceptRequest={this.props.acceptRequest}
         />
         <br />

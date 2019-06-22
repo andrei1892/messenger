@@ -1,29 +1,35 @@
-import React from 'react'
+import React from "react";
 
-const GetConversations = (props) => {
-    return (
-        <nav className="conversations-list column">
-          <input
-            className="search-conversations-list"
-            placeholder="Search Messages"
-          />
-          {/* {props.messages.map((conversationContent,key) => (
-            <div key={key} className="info-box-wrapper">
-            <p>{conversationContent}</p>
-            </div>
-          ))} */}
-          {props.conversations.map( (conversationContent,key) => (
-          <div key={key} 
-            id={conversationContent._id} 
+const GetConversations = props => {
+  const [firstRendered, updateFirstRendered] = React.useState(true);
+  return (
+    <nav className="conversations-list column">
+      <input
+        className="search-conversations-list"
+        placeholder="Search conversations"
+      />
+      {props.conversations.map((conversationContent, key) => {
+        if (key === 0 && firstRendered === true) {
+          props.getConversation({
+            target: {
+              id: conversationContent._id
+            }
+          });
+          updateFirstRendered(false);
+        }
+        return (
+          <div
+            key={key}
+            id={conversationContent._id}
             className="info-box-wrapper last-conversation"
             onClick={props.getConversation}
-            >
-              {conversationContent.messages[0].msg_content}
-            </div>
-            )
-          )}
-        </nav>
-      )
-}
+          >
+            {conversationContent.messages.msg_content}
+          </div>
+        );
+      })}
+    </nav>
+  );
+};
 
-export default GetConversations ;
+export default GetConversations;

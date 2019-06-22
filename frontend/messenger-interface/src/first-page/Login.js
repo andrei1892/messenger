@@ -20,7 +20,7 @@ const LoginForm = props => {
           logging(true);
         } else alert(response.data.message);
       })
-      .catch(err => console.log(err));
+      .catch(err => alert(err.response.data.message)); // console.log(err.response);
   };
 
   if (isLogged) return <Redirect to="/profile" />;
