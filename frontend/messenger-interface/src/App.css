@@ -102,18 +102,6 @@ body {
 
 .conversations-list {
   overflow: hidden;
-  text-align: center;
-}
-.search-conversations-list {
-  width: 80%;
-  margin: 5px;
-  border: 1px lightgray solid;
-  border-radius: 15px;
-  text-align: center;
-}
-.search-conversations-list:focus {
-  outline: none;
-  border: 1px #0084ff solid;
 }
 
 .conversations-list:hover {
@@ -124,6 +112,7 @@ body {
   overflow: hidden;
   font-size: 80%;
   justify-content: center;
+  cursor: pointer;
 }
 
 /*  messenger page-> main -> friendships container  */
@@ -133,10 +122,14 @@ body {
   justify-content: flex-start;
 }
 /* friends */
-.in-frienships-bar{
+.frienship-category {
   display: flex;
   flex-direction: column;
   border: 0.5px solid rgb(213, 213, 241);
+}
+
+.friend-box {
+  justify-content: space-between;
 }
 
 /* suggestions */
@@ -146,7 +139,6 @@ body {
   font-size: 80%;
   border-radius: 15%;
   cursor: pointer;
-  float: right;
 }
 
 /* messenger page -> main -> current Conversation */
@@ -170,7 +162,7 @@ body {
   margin: 2px;
   padding: 5px;
   border: 1px solid;
-  border-radius: 25% / 25%;
+  border-radius: 20% 15% 15% 20%;
 }
 
 .messaged-received {
@@ -209,16 +201,29 @@ body {
 }
 
 /* reusables */
-  .column {
-    border: 0.5px lightgray solid;
-    overflow-y: hidden;
-  }
+.column {
+  border: 0.5px lightgray solid;
+  overflow-y: hidden;
+  text-align: center;
+}
 
 .info-box-wrapper {
   border: 0.1px lightgray solid;
   height: 50px;
   display: flex;
   align-items: center;
+}
+
+.search {
+  width: 80%;
+  margin: 5px;
+  border: 1px lightgray solid;
+  border-radius: 15px;
+  text-align: center;
+}
+.search:focus {
+  outline: none;
+  border: 1px #0084ff solid;
 }
 
 .form-container{

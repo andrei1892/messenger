@@ -11,9 +11,13 @@ class CurrentConversation extends Component {
     const sender = this.props.crtConversation.userId;
     return (
       <div className="current-conversation-wrapper column">
+         <input
+        className="search mx-auto"
+        placeholder="Search"
+      />
         <div className="chat-conversation">
-          {  this.props.crtConversation.isOn ? this.props.crtConversation.messages.map( msg => (
-            <p className={ sender === msg.sender ? "messaged-sent" : "messaged-received" }>{msg.msg_content}</p>
+          {  this.props.crtConversation.isOn ? this.props.crtConversation.messages.map( (msg , key ) => (
+            <p key={key} className={ sender === msg.sender ? "messaged-sent" : "messaged-received" }>{msg.msg_content}</p>
           )) : null }
         </div>
         <div className="chat-send" id={this.props.crtConversation._id}>

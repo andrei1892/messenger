@@ -7,21 +7,22 @@ const Friends = props => {
     props.awaitingFrRes.length === 0
   )
     return (
-      <div className="in-frienships-bar">
+      <div className="frienship-category">
         You have no friends; search suggestions{" "}
       </div>
     );
   else {
     return (
-      <div className="in-frienships-bar">
+      <div className="frienship-category">
         <div className="friends">
           <h5> Friends </h5>
-          {props.friends.map(friend => {
+          {props.friends.map((friend, key) => {
             return (
-              <div className="info-box-wrapper">
-                <span className="px-1">{friend.firstname}</span>
-                <span> </span>
-                <span className="px-1">{friend.lastname}</span>
+              <div key={key} className="info-box-wrapper friend-box">
+                <p>
+                  <span className="px-1">{friend.firstname}</span>
+                  <span className="px-1">{friend.lastname}</span>
+                </p>
               </div>
             );
           })}
@@ -32,9 +33,15 @@ const Friends = props => {
               <h5> Friend requests </h5>
               {props.pendingFrReq.map((pending, key) => {
                 return (
-                  <div key={key} className="info-box-wrapper" id={pending.id}>
-                    <span className="px-1">{pending.firstname}</span>{" "}
-                    <span>{pending.lastname}</span>
+                  <div
+                    key={key}
+                    className="info-box-wrapper friend-box"
+                    id={pending.id}
+                  >
+                    <p>
+                      <span className="px-1">{pending.firstname}</span>
+                      <span>{pending.lastname}</span>
+                    </p>
                     <button
                       className="btn btn-add-friend"
                       onClick={props.acceptRequest}
@@ -48,16 +55,26 @@ const Friends = props => {
           ) : null}
         </div>
         <div className="requests-sent">
-          <h5>Requests sent</h5>
-          {props.awaitingFrRes.map((awaiting, key) => {
-            return (
-              <div key={key} className="info-box-wrapper" id={awaiting.id}>
-                <span>{awaiting.firstname}</span>{" "}
-                <span>{awaiting.lastname}</span>
-                <img src="" alt="-awaiting" />
-              </div>
-            );
-          })}
+          {props.awaitingFrRes.length !== 0 ? (
+            <>
+              <h5>Requests sent</h5>
+              {props.awaitingFrRes.map((awaiting, key) => {
+                return (
+                  <div
+                    key={key}
+                    className="info-box-wrapper friend-box"
+                    id={awaiting.id}
+                  >
+                    <p>
+                      <span>{awaiting.firstname}</span>
+                      <span>{awaiting.lastname}</span>
+                    </p>
+                    <img src="" alt="-awaiting" />
+                  </div>
+                );
+              })}
+            </>
+          ) : null}
         </div>
       </div>
     );

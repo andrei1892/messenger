@@ -5,7 +5,7 @@ const GetConversations = props => {
   return (
     <nav className="conversations-list column">
       <input
-        className="search-conversations-list"
+        className="search"
         placeholder="Search conversations"
       />
       {props.conversations.map((conversationContent, key) => {
