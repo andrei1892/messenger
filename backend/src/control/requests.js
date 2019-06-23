@@ -113,7 +113,7 @@ const get_friends = (req, res) => {
                   .then(friends => {
                     // friends is an array with all users in crt users's friends
                     res.status(200).json({
-                      // sending 3 arrays with the fname, lname and ids of specific category
+                      // sending 3 arrays with the fname, lname and ids for each category
                       friends: friends.map(friend => {
                         return {
                           firstname: friend.firstname,
@@ -189,36 +189,40 @@ const get_conversations = (req, res) => {
         participants: {
           $in: user._id
         }
-      }).then(conversations => {
-        allConversations = JSON.parse(JSON.stringify(conversations)).map(conv => {
-          conv.lastSender = '';
-          if (conv.messages.length  === 0) { // check if there are messages in this conversation
-            conv.messages = { msg_content: "You've got a new friend. Say Hi!" } //default msg for new conversations
-            conv.lastSender = conv.participants.filter( participant => participant.toString() !== user._id.toString())[0]
-          } else {
-            conv.messages = conv.messages[conv.messages.length - 1]; // retunrn only last message
-            conv.lastSender = conv.messages.sender
+      })
+      .populate('last_sender')
+      .exec((err,conversations) => {
+        console.log(conversations);
+        allConversations = JSON.parse(JSON.stringify(conversations)).map(
+          conv => {
+            console.log(conv.last_sender);
+            conv.last_sender_info = {};
+            if (conv.messages.length === 0) {
+              conv.messages = {
+                msg_content: "You've got a new friend. Say Hi!"
+              }; //default msg for new conversations
+            } else {
+              conv.messages = conv.messages[conv.messages.length - 1]; // retunrn only last message
+            }
+            return conv;
           }
-          return conv;
-        });
-        let other = allConversations.map(x => x.lastSender);
-        USER.find({_id: {$in: other} }).then(res => {
-           console.log(res);
-        // allConversations = allConversations.map( conv => {
-
-        //   return conv
-        // })   
-         })
-          //populate;
-        // identifier(allConversations.lastSender).then( response => {
-        //   console.log(response)
-        // })
+        );
+        // check if last_sender is crt_User - if yes return the other participant id in find ; if no return it 
+         // USER.findOne()
+        
 
         res.status(200).json({ conversations: allConversations });
       });
     });
-    // });
   });
+};
+
+const get_conversation = (req, res) => {
+  //console.log(req.query.id);
+  let convId = new ObjectID(req.query.id);
+  MESSAGES.findOne({ _id: convId }) // {participants: 0}
+    .then(response => res.status(200).json({ conversation: response }))
+    .catch(err => res.status(404).json({ message: "No conversation found" }));
 };
 
 const send_friend_request = (req, res) => {
@@ -229,12 +233,13 @@ const send_friend_request = (req, res) => {
     let findSender = { username: payload.username };
     let receiverId = req.body.receiver;
     let rec_id = new ObjectID(receiverId);
-
+    // * sending a fr_req consists on adding both participants on each others waiting & to_confirm lists
     USER.findOne(findSender).then(senderResponse => {
       if (senderResponse === null)
         res.status(404).json({ message: "No user found" });
       else {
         if (
+          // check if the sender hasn't already made a request
           !senderResponse.waiting_for_confirmation.find(
             id => id.toString() === rec_id.toString()
           ) &&
@@ -250,13 +255,10 @@ const send_friend_request = (req, res) => {
             if (err) res.status(400).json({ message: err });
           });
 
-          console.log("friend request sent"); // alternativa USER.updateOne({criteriu})
-
           USER.findOne({ _id: rec_id }).then(receiverResponse => {
             if (receiverResponse === null)
               res.status(404).json({ message: "No user found" });
             else {
-              //console.log(receiverResponse)
               if (
                 !receiverResponse.waiting_for_confirmation.find(
                   sender => sender === payload.id.toString()
@@ -273,9 +275,7 @@ const send_friend_request = (req, res) => {
                   if (err) res.status(400).json({ message: err });
                   else res.status(200).json({ message: "Friend Request Sent" });
                 });
-                console.log("friend request received");
               } else {
-                console.log("request was already received");
                 res
                   .status(400)
                   .json({ message: "Friend request was already sent" });
@@ -283,15 +283,12 @@ const send_friend_request = (req, res) => {
             }
           });
         } else {
-          console.log("request was already sent");
           res.status(400).json({ message: "Friend request was already sent" });
         }
       }
     });
   });
 };
-
-const search_friends = (req, res) => {};
 
 const accept_friend_request = (req, res) => {
   // adaugat si decline
@@ -302,36 +299,30 @@ const accept_friend_request = (req, res) => {
       if (user === null) res.status(404).json({ message: "No user found" });
       else {
         identifier(req.body.friend).then(friend => {
-          // console.log(`cele 2 id-uri: ${user._id} si ${friend._id}`);
-          // console.log(`friend is ${friend}`);
-          // console.log(`eu : ${user}`);
-
+          // find the sebder_user
+          //# on accepting a request ; a new conversation is created ;
           let newConversation = new MESSAGES({
             participants: [user._id, friend._id],
             seen: false
           });
-
           newConversation.save();
-
-          console.log(newConversation);
-
+          // remove the user from waiting list on sender  & add to friend list
           friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
-            x => x != payload.id
+            id => id != payload.id
           );
           friend.friends.push({
             friend: user._id,
             conversation: newConversation._id
           });
-          friend.save();
-
+          friend.save();      
+          // remove the sender on crt_user & add sender to user list
           user.requests_to_confirm = user.requests_to_confirm.filter(
-            x => x != req.body.friend
+            id => id != req.body.friend
           );
           user.friends.push({
             friend: friend._id,
             conversation: newConversation._id
           });
-
           user.save((err, result) => {
             if (err) {
               console.log(err);
@@ -347,16 +338,6 @@ const accept_friend_request = (req, res) => {
   });
 };
 
-const get_conversation = (req, res) => {
-  //console.log(req.query.id);
-  let convId = new ObjectID(req.query.id);
-  MESSAGES.findOne({ _id: convId }) // {participants: 0}
-    .then(response => res.status(200).json({ conversation: response }))
-    .catch(err => res.status(404).json({ message: "No conversation found" }));
-};
-
-const send_seen_event = (req, res) => {};
-
 const send_message = (req, res) => {
   jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
     if (err) {
@@ -367,6 +348,7 @@ const send_message = (req, res) => {
     let userId = new ObjectID(payload.id);
     MESSAGES.findOne({ _id: { $in: convId } }).then(response => {
       response.messages.push({ sender: userId, msg_content: req.body.message });
+      response.last_sender = userId;
       response.last_update = Date.now();
       response.save((err, result) => {
         if (err) {
@@ -378,11 +360,12 @@ const send_message = (req, res) => {
   });
 };
 
+const send_seen_event = (req, res) => {};
+const search_friends = (req, res) => {};
 const check_activity = (req, res) => {};
 
 // secure backend routes; more verifications
 // set timeout - requests
-// adaguare cauta in conversatie
 // check activity -> trebuie sa tragi datele de la server sau nu
 // cu timestamp ; pe partea de client ultimu time-stamp primit;
 // la req se modifica datele
