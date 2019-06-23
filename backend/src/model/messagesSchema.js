@@ -9,18 +9,24 @@ const CONFIG = require("../config");
 var Schema = mongoose.Schema;
 
 var MessagesSchema = new Schema({
-  participants: { type: Array, required: true, default: [], of: {
-      type: {type: mongoose.Schema.Types.ObjectId, ref: 'users'}
-  }},
+  participants: {
+    type: Array,
+    required: true,
+    default: [],
+    of: {
+      type: { type: mongoose.Schema.Types.ObjectId, ref: "users" }
+    }
+  },
   messages: {
     type: Array,
     required: true,
     default: [],
     of: {
-       sender: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
-       msg_content: String
+      sender: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+      msg_content: String
     }
   },
+  last_sender:  { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   last_update: {
     type: Date,
     required: true,
