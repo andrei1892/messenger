@@ -111,8 +111,13 @@ body {
 .last-conversation{
   overflow: hidden;
   font-size: 80%;
-  justify-content: center;
+  justify-content: flex-start;
   cursor: pointer;
+  z-index: 100;
+}
+
+.conv-participant, .conv-last-message {
+  z-index: 1;
 }
 
 /*  messenger page-> main -> friendships container  */

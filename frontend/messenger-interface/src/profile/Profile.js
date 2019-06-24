@@ -42,7 +42,7 @@ class Profile extends Component {
         }
       })
       .then(response => {
-        console.log(response);
+       // console.log(response);
         this.setState({
           friends: response.data.friends,
           pendingFrReq: response.data.pending,
@@ -69,7 +69,7 @@ class Profile extends Component {
         }
       })
       .then(response => {
-        console.log(response)
+        //console.log(response)
         this.setState({ conversations: response.data.conversations });
       })
       .catch(err => console.log(`get conv - eroare la catch: ${err}`));
@@ -86,7 +86,7 @@ class Profile extends Component {
   sendFriendRequest = ev => {
     axios
       .post(
-        "http://localhost:4000/send_friend_request",
+        "http://localhost:4000/user/send_friend_request",
         {
           receiver: ev.target.parentNode.id
         },
@@ -119,7 +119,7 @@ class Profile extends Component {
     // console.log(ev.target.parentNode.id);
     axios
       .post(
-        "http://localhost:4000/accept_request",
+        "http://localhost:4000/user/accept_request",
         {
           friend: ev.target.parentNode.id
         },
@@ -148,9 +148,9 @@ class Profile extends Component {
       .catch(err => console.log(err));
   };
 
-  getConversation = ev => {
+  getConversation = convId => {
     axios
-      .get("http://localhost:4000/user/get_conversation?id=" + ev.target.id, {
+      .get("http://localhost:4000/user/get_conversation?id=" +convId, {
         headers: {
           token: localStorage.getItem("token")
         }
@@ -164,7 +164,10 @@ class Profile extends Component {
             crtConversation: crtConversation
           };
         });
-      });
+      })
+      .catch(err=>{
+        console.log(err)
+      })
   };
 
   messageContainer = ev => {
@@ -181,7 +184,7 @@ class Profile extends Component {
     console.log(ev.target.offsetParent.offsetParent.id);
     axios
       .post(
-        "http://localhost:4000/send_message",
+        "http://localhost:4000/user/send_message",
         {
           message: this.state.msg,
           conversationId: ev.target.offsetParent.offsetParent.id
