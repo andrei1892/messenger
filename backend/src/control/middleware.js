@@ -8,7 +8,10 @@ const auth_middleware = (req, res, next) => {
   else {
     jwt.verify(req.headers["token"], CONFIG.JWT_SECRET_KEY, (err, payload) => {
       if (err) res.status(401);
-      else next();
+      else {
+        req.payload = payload;
+        next();
+      };
     });
   }
 };
