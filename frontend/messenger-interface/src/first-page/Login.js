@@ -36,6 +36,7 @@ const LoginForm = props => {
           className="login-input form-control"
           type="email"
           name="username"
+          autoComplete="off"
           placeholder="Email"
           onChange={props.getCredentials}
         />
@@ -43,6 +44,7 @@ const LoginForm = props => {
           className="login-input form-control"
           name="password"
           type="password"
+          autoComplete="off"
           placeholder="Password"
           onChange={props.getCredentials}
         />

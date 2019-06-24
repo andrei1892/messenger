@@ -43,6 +43,7 @@ const RegisterForm = props => {
           name="firstname"
           type="text"
           placeholder="Firstname"
+          autoComplete="off"
           onChange={props.getCredentials}
           required
         />
@@ -55,6 +56,7 @@ const RegisterForm = props => {
           name="lastname"
           type="text"
           placeholder="Name"
+          autoComplete="off"
           onChange={props.getCredentials}
           required
         />
@@ -79,6 +81,7 @@ const RegisterForm = props => {
           name="email"
           type="email"
           placeholder="Email"
+          autoComplete="off"
           onChange={props.getCredentials}
           required
         />
