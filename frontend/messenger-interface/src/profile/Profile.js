@@ -42,7 +42,7 @@ class Profile extends Component {
         }
       })
       .then(response => {
-       // console.log(response);
+        // console.log(response);
         this.setState({
           friends: response.data.friends,
           pendingFrReq: response.data.pending,
@@ -150,7 +150,7 @@ class Profile extends Component {
 
   getConversation = convId => {
     axios
-      .get("http://localhost:4000/user/get_conversation?id=" +convId, {
+      .get("http://localhost:4000/user/get_conversation?id=" + convId, {
         headers: {
           token: localStorage.getItem("token")
         }
@@ -165,9 +165,9 @@ class Profile extends Component {
           };
         });
       })
-      .catch(err=>{
-        console.log(err)
-      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   messageContainer = ev => {
@@ -197,7 +197,30 @@ class Profile extends Component {
       )
       .then(response => {
         console.log(response);
+        console.log(response.data)
         this.setState({ msg: "" });
+        axios
+          .get(
+            "http://localhost:4000/user/get_conversation?id=" + response.data.convId,
+            {
+              headers: {
+                token: localStorage.getItem("token")
+              }
+            }
+          )
+          .then(response => {
+            this.setState(prevstate => {
+              let crtConversation = response.data.conversation;
+              crtConversation.isOn = true;
+              crtConversation.userId = prevstate.myData.id;
+              return {
+                crtConversation: crtConversation
+              };
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       })
       .catch(err => console.log(err));
   };

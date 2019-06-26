@@ -5,8 +5,19 @@ class CurrentConversation extends Component {
     super();
     this.state = {
     };
+    this.conv = React.createRef();
   }
 
+  componentDidUpdate(prevProps){
+    if( this.props.crtConversation._id !== prevProps.crtConversation._id ){
+      this.scrollToLast();
+    }
+// /this.props.crtConversation._id
+  }
+
+  scrollToLast = () => this.conv.current.scrollIntoView({ behaviour:"smooth"}) 
+
+    
   render() {
     const sender = this.props.crtConversation.userId;
     return (
@@ -15,10 +26,11 @@ class CurrentConversation extends Component {
         className="search mx-auto"
         placeholder="Search"
       />
-        <div className="chat-conversation">
+        <div className="chat-conversation" >
           {  this.props.crtConversation.isOn ? this.props.crtConversation.messages.map( (msg , key ) => (
             <p key={key} className={ sender === msg.sender ? "messaged-sent" : "messaged-received" }>{msg.msg_content}</p>
           )) : null }
+          <div className="dummy"  ref={this.conv}/>
         </div>
         <div className="chat-send" id={this.props.crtConversation._id}>
           <div className="message-content-container">

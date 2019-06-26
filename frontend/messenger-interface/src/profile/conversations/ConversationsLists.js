@@ -14,16 +14,20 @@ const GetConversations = props => {
           <div
             key={key}
             id={conversationContent._id}
-            className="info-box-wrapper last-conversation"
+            className="info-box-wrapper last-conversation-container"
             onClick={ () => props.getConversation(conversationContent._id) }
           >
-            <p className="conv-participant" >
+            {/* <img  className="profile-picture" /> */}
+            <div className="last-conversation-details" >
+            <p className="conv-last-sender" >
               <span>
-                {conversationContent.other.firstname}
+                {conversationContent.last_sender.firstname}
               </span>
-              <span> {conversationContent.other.lastname}{`:`}</span>
+              <span> {conversationContent.last_sender.lastname}{`:`}</span>
             </p >
-            <p className="px-1 conv-last-message" >{conversationContent.messages.msg_content}</p>
+            <p className="conv-last-message" >{conversationContent.messages.msg_content}</p>
+            <p className="conv-last-timestamp" > {conversationContent.last_update} </p>
+            </div>
           </div>
         );
       })}
