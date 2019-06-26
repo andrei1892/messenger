@@ -170,13 +170,14 @@ const get_conversations = (req, res) => {
           $in: user._id
         }
       })
-        .populate({ path: "participants", select: "firstname lastname" })
+        .populate([{ path: "participants", select: "firstname lastname" },{ path: "last_sender" , select: "firstname lastname" }])
         .exec((err, conversations) => {
+          console.log(conversations);
           allConversations = JSON.parse(JSON.stringify(conversations)).map(
             conv => {
               conv.other = {};
-              let participantOne = conv.participants[0];
-              let participantTwo = conv.participants[1];
+              //let participantOne = conv.participants[0];
+              //let participantTwo = conv.participants[1];
               if (conv.messages.length === 0) {
                 conv.messages = {
                   msg_content: "You've got a new friend. Say Hi!"
@@ -185,13 +186,16 @@ const get_conversations = (req, res) => {
                 conv.messages = conv.messages[conv.messages.length - 1]; // return only last message
               }
               // get fname&lname about the other participant to display
-              if (participantOne._id.toString === user._id) {
-                conv.other.firstname = participantOne.firstname;
-                conv.other.lastname = participantOne.lastname;
+              if (conv.participants[0]._id.toString() === user._id.toString()) {
+                conv.other.firstname = conv.participants[1].firstname;
+                conv.other.lastname = conv.participants[1].lastname;
               } else {
-                conv.other.firstname = participantTwo.firstname;
-                conv.other.lastname = participantTwo.lastname;
+                conv.other.firstname = conv.participants[0].firstname;
+                conv.other.lastname = conv.participants[0].lastname;
               }
+              // conv.last_update = conv.last_update.getDate()
+              console.log(conv.last_update)
+
               return conv;
             }
           );
@@ -322,6 +326,9 @@ const send_message = (req, res) => {
       partcipantId => partcipantId.toString() === req.payload.id.toString()
     );
     if (check) {
+      let date = new Date();
+      console.log(date);
+      console.log(date.getDate())
       response.messages.push({
         sender: userId,
         msg_content: req.body.message
@@ -331,7 +338,7 @@ const send_message = (req, res) => {
       response.save((err, result) => {
         if (err) {
           res.status(409).json({ message: err });
-        } else res.status(200).json({ message: "mesage sent" });
+        } else res.status(200).json({ convId: response._id, message: "mesage sent" });
       });
     } else
       res
