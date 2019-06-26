@@ -2,17 +2,18 @@ import React, { Component } from "react";
 
 class CurrentConversation extends Component {
   constructor(props) {
-    super();
-    this.state = {
-    };
+    super(props);
+    this.state = {};
     this.conv = React.createRef();
+  }
+  componenDidMount(){
+    this.scrollToLast();
   }
 
   componentDidUpdate(prevProps){
     if( this.props.crtConversation._id !== prevProps.crtConversation._id ){
       this.scrollToLast();
     }
-// /this.props.crtConversation._id
   }
 
   scrollToLast = () => this.conv.current.scrollIntoView({ behaviour:"smooth"}) 

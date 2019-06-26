@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import UserInfo from "./info/UserInfo";
-import GetConversations from "./conversations/ConversationsLists";
+import AllConversations from "./all_conversations/ConversationsList";
 import CurrentConversation from "./crt_conversation/CurrentConversation";
 import FriendshipsBar from "./friends/FriendshipsBar";
 
@@ -96,7 +96,7 @@ class Profile extends Component {
           }
         }
       )
-      .then(response => {
+      .then(res => {
         axios
           .get("http://localhost:4000/user/get_friends", {
             headers: {
@@ -116,7 +116,6 @@ class Profile extends Component {
   };
 
   acceptRequest = ev => {
-    // console.log(ev.target.parentNode.id);
     axios
       .post(
         "http://localhost:4000/user/accept_request",
@@ -129,7 +128,7 @@ class Profile extends Component {
           }
         }
       )
-      .then(response => {
+      .then(res => {
         axios
           .get("http://localhost:4000/user/get_friends", {
             headers: {
@@ -171,12 +170,11 @@ class Profile extends Component {
   };
 
   messageContainer = ev => {
-    //console.log(ev.target.value)
+    //console.log(ev.target)
     this.setState({ msg: ev.target.value });
   };
 
   sendMessage = ev => {
-    //console.dir(ev.target);
     console.log(this.state.msg);
     if (this.state.msg === "") {
       return null;
@@ -196,8 +194,6 @@ class Profile extends Component {
         }
       )
       .then(response => {
-        console.log(response);
-        console.log(response.data)
         this.setState({ msg: "" });
         axios
           .get(
@@ -230,7 +226,7 @@ class Profile extends Component {
       <div className="page-container">
         <UserInfo data={this.state.myData} />
         <main className="main-wrapper ">
-          <GetConversations
+          <AllConversations
             conversations={this.state.conversations}
             getConversation={this.getConversation}
           />
