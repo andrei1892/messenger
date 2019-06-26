@@ -12,6 +12,30 @@ const identifier = id => {
   });
 };
 
+const weekdays = new Array(
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+);
+const months = new Array(
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+);
+
 const register = (req, res) => {
   if (
     req.body.firstname &&
@@ -90,118 +114,126 @@ const get_my_data = (req, res) => {
 };
 
 const get_friends = (req, res) => {
-    identifier(req.payload.id).then(user => {
-      // crt user
-      if (user) {
-        USER.find({ _id: { $in: user.requests_to_confirm } }) // all ids (users) in requests_to_confirm
-          .then(pendings => {
-            //# pendings is an array with all users in crt user's requests_to_confirm
-            USER.find({ _id: { $in: user.waiting_for_confirmation } }) // all ids in waiting_for_confirmation
-              .then(awaiting => {
-                //# awaiting is an array with all users in crt user's waiting_for_confirmation
-                USER.find({ _id: { $in: user.friends.map(x => x.friend) } }) // all ids in friends
-                  .then(friends => {
-                    // friends is an array with all users in crt users's friends
-                    res.status(200).json({
-                      // sending 3 arrays with the fname, lname and ids for each category
-                      friends: friends.map(friend => {
-                        return {
-                          firstname: friend.firstname,
-                          lastname: friend.lastname,
-                          id: friend._id.toString()
-                        };
-                      }),
-                      pending: pendings.map(user => {
-                        return {
-                          firstname: user.firstname,
-                          lastname: user.lastname,
-                          id: user._id.toString()
-                        };
-                      }),
-                      awaiting: awaiting.map(user => {
-                        return {
-                          firstname: user.firstname,
-                          lastname: user.lastname,
-                          id: user._id.toString()
-                        };
-                      })
-                    });
+  identifier(req.payload.id).then(user => {
+    // crt user
+    if (user) {
+      USER.find({ _id: { $in: user.requests_to_confirm } }) // all ids (users) in requests_to_confirm
+        .then(pendings => {
+          //# pendings is an array with all users in crt user's requests_to_confirm
+          USER.find({ _id: { $in: user.waiting_for_confirmation } }) // all ids in waiting_for_confirmation
+            .then(awaiting => {
+              //# awaiting is an array with all users in crt user's waiting_for_confirmation
+              USER.find({ _id: { $in: user.friends.map(x => x.friend) } }) // all ids in friends
+                .then(friends => {
+                  // friends is an array with all users in crt users's friends
+                  res.status(200).json({
+                    // sending 3 arrays with the fname, lname and ids for each category
+                    friends: friends.map(friend => {
+                      return {
+                        firstname: friend.firstname,
+                        lastname: friend.lastname,
+                        id: friend._id.toString()
+                      };
+                    }),
+                    pending: pendings.map(user => {
+                      return {
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        id: user._id.toString()
+                      };
+                    }),
+                    awaiting: awaiting.map(user => {
+                      return {
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        id: user._id.toString()
+                      };
+                    })
                   });
-              });
-          });
-      } else {
-        res.sendStatus(404);
-      }
-    });
+                });
+            });
+        });
+    } else {
+      res.sendStatus(404);
+    }
+  });
 };
 
 const get_friends_suggestions = (req, res) => {
-    let findUser = { username: req.payload.username };
-    USER.findOne(findUser).then(response => {
-      if (response === null) res.status(404).json({ message: "No user found" });
-      else {
-        USER.find(
-          // find all users excluding the ones in crt_user network
-          {
-            _id: {
-              $nin: [
-                response._id, // not crt user
-                ...response.waiting_for_confirmation,
-                ...response.requests_to_confirm,
-                ...response.friends.map(x => x.friend)
-              ]
-            }
-          },
-          { firstname: 1, lastname: 1 } // return only fname & lname
-        ).then(result => {
-          if (result === null)
-            res.status(404).json({ message: "No suggestions found" });
-          res.status(200).json({ suggestions: result });
-        });
-      }
-    });
+  let findUser = { username: req.payload.username };
+  USER.findOne(findUser).then(response => {
+    if (response === null) res.status(404).json({ message: "No user found" });
+    else {
+      USER.find(
+        // find all users excluding the ones in crt_user network
+        {
+          _id: {
+            $nin: [
+              response._id, // not crt user
+              ...response.waiting_for_confirmation,
+              ...response.requests_to_confirm,
+              ...response.friends.map(x => x.friend)
+            ]
+          }
+        },
+        { firstname: 1, lastname: 1 } // return only fname & lname
+      ).then(result => {
+        if (result === null)
+          res.status(404).json({ message: "No suggestions found" });
+        res.status(200).json({ suggestions: result });
+      });
+    }
+  });
 };
 
 const get_conversations = (req, res) => {
-    identifier(req.payload.id).then(user => {
-      MESSAGES.find({
-        // get conversations with contain crt_user
-        participants: {
-          $in: user._id
-        }
-      })
-        .populate([{ path: "participants", select: "firstname lastname" },{ path: "last_sender" , select: "firstname lastname" }])
-        .exec((err, conversations) => {
-          console.log(conversations);
-          allConversations = JSON.parse(JSON.stringify(conversations)).map(
-            conv => {
-              conv.other = {};
-              //let participantOne = conv.participants[0];
-              //let participantTwo = conv.participants[1];
-              if (conv.messages.length === 0) {
-                conv.messages = {
-                  msg_content: "You've got a new friend. Say Hi!"
-                }; //default msg for new conversations
-              } else {
-                conv.messages = conv.messages[conv.messages.length - 1]; // return only last message
-              }
-              // get fname&lname about the other participant to display
-              if (conv.participants[0]._id.toString() === user._id.toString()) {
-                conv.other.firstname = conv.participants[1].firstname;
-                conv.other.lastname = conv.participants[1].lastname;
-              } else {
-                conv.other.firstname = conv.participants[0].firstname;
-                conv.other.lastname = conv.participants[0].lastname;
-              }
-              // conv.last_update = conv.last_update.getDate()
-              console.log(conv.last_update)
-
-              return conv;
+  identifier(req.payload.id).then(user => {
+    MESSAGES.find({
+      // get conversations with contain crt_user
+      participants: {
+        $in: user._id
+      }
+    })
+      .populate([
+        { path: "participants", select: "firstname lastname" },
+        { path: "last_sender", select: "firstname lastname" }
+      ])
+      .exec((err, conversations) => {
+        allConversations = JSON.parse(JSON.stringify(conversations)).map(
+          conv => {
+            conv.other = {};
+            conv.timestamp = {};
+            if (conv.messages.length === 0) {
+              conv.messages = {
+                msg_content: "You've got a new friend. Say Hi!"
+              }; //default msg for new conversations
+            } else {
+              conv.messages = conv.messages[conv.messages.length - 1]; // return only last message
             }
-          );
-          res.status(200).json({ conversations: allConversations });
-        });
-    });
+            // get fname&lname about the other participant to display
+            if (conv.participants[0]._id.toString() === user._id.toString()) {
+              conv.other.firstname = conv.participants[1].firstname;
+              conv.other.lastname = conv.participants[1].lastname;
+            } else {
+              conv.other.firstname = conv.participants[0].firstname;
+              conv.other.lastname = conv.participants[0].lastname;
+            }
+            let timestamp = new Date(conv.last_update);
+            conv.timestamp.date = `${timestamp.getDate()}-${
+              months[timestamp.getMonth()]
+            }-${timestamp.getFullYear()}`;
+            conv.timestamp.weekday = weekdays[timestamp.getDay()];
+            conv.timestamp.time = `${timestamp.getHours()}: ${
+              timestamp.getMinutes() < 10
+                ? "0" + timestamp.getMinutes()
+                : timestamp.getMinutes()
+            }`;
+            return conv;
+          }
+        );
+        res.status(200).json({ conversations: allConversations });
+      });
+  });
 };
 
 const get_conversation = (req, res) => {
@@ -276,45 +308,45 @@ const send_friend_request = (req, res) => {
 
 const accept_friend_request = (req, res) => {
   USER.findOne({ username: req.payload.username }).then(user => {
-      if (user === null) res.status(404).json({ message: "No user found" });
-      else {
-        identifier(req.body.friend).then(friend => {
-          // find the sender_user
-          //# on accepting a request ; a new conversation is created ;
-          let newConversation = new MESSAGES({
-            participants: [user._id, friend._id],
-            last_sender: user._id,
-            seen: false
-          });
-          newConversation.save();
-          // remove the user from waiting list on sender  & add to friend list
-          friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
-            id => id != req.payload.id
-          );
-          friend.friends.push({
-            friend: user._id,
-            conversation: newConversation._id
-          });
-          friend.save();
-          // remove the sender on crt_user & add sender to user list
-          user.requests_to_confirm = user.requests_to_confirm.filter(
-            id => id != req.body.friend
-          );
-          user.friends.push({
-            friend: friend._id,
-            conversation: newConversation._id
-          });
-          user.save((err, result) => {
-            if (err) {
-              res.status(409).json({ accepted: false, message: err });
-            } else
-              res
-                .status(200)
-                .json({ accepted: true, message: "Request Accepted" });
-          });
+    if (user === null) res.status(404).json({ message: "No user found" });
+    else {
+      identifier(req.body.friend).then(friend => {
+        // find the sender_user
+        //# on accepting a request ; a new conversation is created ;
+        let newConversation = new MESSAGES({
+          participants: [user._id, friend._id],
+          last_sender: user._id,
+          seen: false
         });
-      }
-    });
+        newConversation.save();
+        // remove the user from waiting list on sender  & add to friend list
+        friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
+          id => id != req.payload.id
+        );
+        friend.friends.push({
+          friend: user._id,
+          conversation: newConversation._id
+        });
+        friend.save();
+        // remove the sender on crt_user & add sender to user list
+        user.requests_to_confirm = user.requests_to_confirm.filter(
+          id => id != req.body.friend
+        );
+        user.friends.push({
+          friend: friend._id,
+          conversation: newConversation._id
+        });
+        user.save((err, result) => {
+          if (err) {
+            res.status(409).json({ accepted: false, message: err });
+          } else
+            res
+              .status(200)
+              .json({ accepted: true, message: "Request Accepted" });
+        });
+      });
+    }
+  });
 };
 
 const send_message = (req, res) => {
@@ -326,9 +358,6 @@ const send_message = (req, res) => {
       partcipantId => partcipantId.toString() === req.payload.id.toString()
     );
     if (check) {
-      let date = new Date();
-      console.log(date);
-      console.log(date.getDate())
       response.messages.push({
         sender: userId,
         msg_content: req.body.message
@@ -338,7 +367,10 @@ const send_message = (req, res) => {
       response.save((err, result) => {
         if (err) {
           res.status(409).json({ message: err });
-        } else res.status(200).json({ convId: response._id, message: "mesage sent" });
+        } else
+          res
+            .status(200)
+            .json({ convId: response._id, message: "mesage sent" });
       });
     } else
       res
