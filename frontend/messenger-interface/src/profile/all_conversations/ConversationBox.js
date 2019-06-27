@@ -11,11 +11,15 @@ const Conversation = (props) => {
         <div className="last-conversation-details" >
         <p className="conv-last-sender" >
           <span>
-            {props.conversationContent.last_sender.firstname}
+            {props.conversationContent.other.firstname}
           </span>
+          <span> {props.conversationContent.other.lastname}{`:`}</span>
+        </p>
+        <p className="conv-last-message" >
+        <span>{props.conversationContent.last_sender.firstname}</span>
           <span> {props.conversationContent.last_sender.lastname}{`:`}</span>
-        </p >
-        <p className="conv-last-message" >{props.conversationContent.messages.msg_content}</p>
+          <span>{props.conversationContent.messages.msg_content}</span>
+        </p>
         <p className="conv-last-timestamp" > {props.conversationContent.timestamp.time} </p>
         </div>
       </div>

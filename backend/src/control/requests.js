@@ -201,7 +201,7 @@ const get_conversations = (req, res) => {
       .exec((err, conversations) => {
         allConversations = JSON.parse(JSON.stringify(conversations)).map(
           conv => {
-            conv.other = {};
+            conv.other = {};  // `${firstname} ${lastname}` 
             conv.timestamp = {};
             if (conv.messages.length === 0) {
               conv.messages = {
@@ -212,7 +212,7 @@ const get_conversations = (req, res) => {
             }
             // get fname&lname about the other participant to display
             if (conv.participants[0]._id.toString() === user._id.toString()) {
-              conv.other.firstname = conv.participants[1].firstname;
+              conv.other.firstname = conv.participants[1].firstname; //other 
               conv.other.lastname = conv.participants[1].lastname;
             } else {
               conv.other.firstname = conv.participants[0].firstname;
