@@ -201,7 +201,7 @@ const get_conversations = (req, res) => {
       .exec((err, conversations) => {
         allConversations = JSON.parse(JSON.stringify(conversations)).map(
           conv => {
-            conv.other = {};  // `${firstname} ${lastname}` 
+            conv.other = {}; // `${firstname} ${lastname}`
             conv.timestamp = {};
             if (conv.messages.length === 0) {
               conv.messages = {
@@ -212,7 +212,7 @@ const get_conversations = (req, res) => {
             }
             // get fname&lname about the other participant to display
             if (conv.participants[0]._id.toString() === user._id.toString()) {
-              conv.other.firstname = conv.participants[1].firstname; //other 
+              conv.other.firstname = conv.participants[1].firstname; //other
               conv.other.lastname = conv.participants[1].lastname;
             } else {
               conv.other.firstname = conv.participants[0].firstname;
@@ -223,7 +223,11 @@ const get_conversations = (req, res) => {
               months[timestamp.getMonth()]
             }-${timestamp.getFullYear()}`;
             conv.timestamp.weekday = weekdays[timestamp.getDay()];
-            conv.timestamp.time = `${timestamp.getHours()}: ${
+            conv.timestamp.time = `${
+              timestamp.getHours() < 10
+                ? "0" + timestamp.getHours()
+                : timestamp.getHours()
+            }: ${
               timestamp.getMinutes() < 10
                 ? "0" + timestamp.getMinutes()
                 : timestamp.getMinutes()
@@ -251,59 +255,61 @@ const send_friend_request = (req, res) => {
   let receiverId = req.body.receiver;
   let rec_id = new ObjectID(receiverId);
   // * sending a fr_req consists on adding both participants on each others waiting & to_confirm lists
-  USER.findOne(findSender).then(senderResponse => {
-    if (senderResponse === null)
-      res.status(404).json({ message: "No user found" });
-    else {
-      if (
-        // check if the sender hasn't already made a request
-        !senderResponse.waiting_for_confirmation.find(
-          id => id.toString() === rec_id.toString()
-        ) &&
-        !senderResponse.friends.find(
-          id => id.toString() === rec_id.toString()
-        ) &&
-        !senderResponse.requests_to_confirm.find(
-          id => id.toString() === rec_id.toString()
-        )
-      ) {
-        senderResponse.waiting_for_confirmation.push(rec_id.toString());
-        senderResponse.save((err, result) => {
-          if (err) res.status(400).json({ message: err });
-        });
+  USER.findOne(findSender)
+    .then(senderResponse => {
+      if (senderResponse === null)
+        res.status(404).json({ message: "No user found" });
+      else {
+        if (
+          // check if the sender hasn't already made a request
+          !senderResponse.waiting_for_confirmation.find(
+            id => id.toString() === rec_id.toString()
+          ) &&
+          !senderResponse.friends.find(
+            id => id.toString() === rec_id.toString()
+          ) &&
+          !senderResponse.requests_to_confirm.find(
+            id => id.toString() === rec_id.toString()
+          )
+        ) {
+          senderResponse.waiting_for_confirmation.push(rec_id.toString());
+          senderResponse.save((err, result) => {
+            if (err) res.status(400).json({ message: err });
+          });
 
-        USER.findOne({ _id: rec_id }).then(receiverResponse => {
-          if (receiverResponse === null)
-            res.status(404).json({ message: "No user found" });
-          else {
-            if (
-              !receiverResponse.waiting_for_confirmation.find(
-                sender => sender === req.payload.id.toString()
-              ) &&
-              !receiverResponse.friends.find(
-                sender => sender === req.payload.id.toString()
-              ) &&
-              !receiverResponse.requests_to_confirm.find(
-                sender => sender === req.payload.id.toString()
-              )
-            ) {
-              receiverResponse.requests_to_confirm.push(req.payload.id);
-              receiverResponse.save((err, result) => {
-                if (err) res.status(400).json({ message: err });
-                else res.status(200).json({ message: "Friend Request Sent" });
-              });
-            } else {
-              res
-                .status(400)
-                .json({ message: "Friend request was already sent" });
+          USER.findOne({ _id: rec_id }).then(receiverResponse => {
+            if (receiverResponse === null)
+              res.status(404).json({ message: "No user found" });
+            else {
+              if (
+                !receiverResponse.waiting_for_confirmation.find(
+                  sender => sender === req.payload.id.toString()
+                ) &&
+                !receiverResponse.friends.find(
+                  sender => sender === req.payload.id.toString()
+                ) &&
+                !receiverResponse.requests_to_confirm.find(
+                  sender => sender === req.payload.id.toString()
+                )
+              ) {
+                receiverResponse.requests_to_confirm.push(req.payload.id);
+                receiverResponse.save((err, result) => {
+                  if (err) res.status(400).json({ message: err });
+                  else res.status(200).json({ message: "Friend Request Sent" });
+                });
+              } else {
+                res
+                  .status(400)
+                  .json({ message: "Friend request was already sent" });
+              }
             }
-          }
-        });
-      } else {
-        res.status(400).json({ message: "Friend request was already sent" });
+          });
+        } else {
+          res.status(400).json({ message: "Friend request was already sent" });
+        }
       }
-    }
-  });
+    })
+    .catch(err => res.status(404).json({ message: err }));
 };
 
 const accept_friend_request = (req, res) => {
@@ -352,31 +358,55 @@ const accept_friend_request = (req, res) => {
 const send_message = (req, res) => {
   let convId = new ObjectID(req.body.conversationId);
   let userId = new ObjectID(req.payload.id);
-  MESSAGES.findOne({ _id: { $in: convId } }).then(response => {
-    // check if token_id is part of the conversations participants ; security check
-    let check = response.participants.find(
-      partcipantId => partcipantId.toString() === req.payload.id.toString()
-    );
-    if (check) {
-      response.messages.push({
-        sender: userId,
-        msg_content: req.body.message
-      });
-      response.last_sender = userId;
-      response.last_update = Date.now();
-      response.save((err, result) => {
-        if (err) {
-          res.status(409).json({ message: err });
-        } else
-          res
-            .status(200)
-            .json({ convId: response._id, message: "mesage sent" });
-      });
-    } else
-      res
-        .status(403)
-        .json({ message: "You are not part of this conversation" });
-  });
+  MESSAGES.findOne({ _id: { $in: convId } })
+    .then(response => {
+      // check if token_id is part of the conversations participants ; security check
+      let check = response.participants.find(
+        partcipantId => partcipantId.toString() === req.payload.id.toString()
+      );
+      if (check) {
+        response.messages.push({
+          sender: userId,
+          msg_content: req.body.message
+        });
+        response.last_sender = userId;
+        response.last_update = Date.now();
+        response.save((err, result) => {
+          if (err) {
+            res.status(409).json({ message: err });
+          } else
+            res
+              .status(200)
+              .json({ convId: response._id, message: "mesage sent" });
+        });
+      } else
+        res
+          .status(403)
+          .json({ message: "You are not part of this conversation" });
+    })
+    .catch(err => res.status(404).json({ message: err }));
+};
+
+const search_message = (req, res) => {
+  let convId = new ObjectID(req.body.conversationId);
+  MESSAGES.findOne({ _id: convId })
+    .then(response => {
+      let check = response.participants.find(
+        partcipantId => partcipantId.toString() === req.payload.id.toString()
+      );
+      if (check) {
+        let search = new RegExp(req.body.search_message, "g");
+        let searchResult = response.messages.reduce((acc, crt) => {
+          if (crt.msg_content.match(search)) acc.push(crt);
+          return acc;
+        }, []);
+        res.status(200).json({ search: searchResult });
+      } else
+        res
+          .status(403)
+          .json({ message: "You are not part of this conversation" });
+    })
+    .catch(err => res.status(404).json({ message: err }));
 };
 
 const send_seen_event = (req, res) => {};
@@ -402,5 +432,6 @@ module.exports = {
   get_conversation,
   send_seen_event,
   send_message,
+  search_message,
   check_activity
 };
