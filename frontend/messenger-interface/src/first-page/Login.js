@@ -5,11 +5,11 @@ import SubmitButton from "../reusables/SubmitButton";
 
 const LoginForm = props => {
   const [isLogged, logging] = React.useState(false);
-  const logIn = e => {
-    e.preventDefault();
+  const logIn = ev => {
+    ev.preventDefault();
     axios
       .post("http://localhost:4000/login", {
-        username: props.username,
+        username: props.username.toLowerCase(),
         password: props.password
       })
       .then(response => {
@@ -20,7 +20,10 @@ const LoginForm = props => {
           logging(true);
         } else alert(response.data.message);
       })
-      .catch(err => alert(err.response.data.message)); // console.log(err.response);
+      .catch(err =>{ 
+        alert(err.response.data.message)
+      });
+    ev.target.reset(); 
   };
 
   if (isLogged) return <Redirect to="/profile" />;

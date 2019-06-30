@@ -12,16 +12,16 @@ const RegisterForm = props => {
         firstname: props.firstname,
         lastname: props.lastname,
         password: props.password,
-        email: props.email
+        email: props.email.toLowerCase()
       })
       .then(response => {
         if (response.data.isValid) {
           props.getCredentials({ target: { name: "password", value: "" } });  
-          alert("Registrations Succesfull");
+          alert(response.data.message);
           register(true);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => alert(err.response.data.message));
   };
 
   if (isRegistered) {
