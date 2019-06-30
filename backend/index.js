@@ -9,4 +9,4 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(ROUTES);
 
-app.listen(CONFIG.PORT, ()=>console.log("Server up and running, waiting for requests"))
+app.listen(CONFIG.PORT, ()=>console.log("Server is up"))
