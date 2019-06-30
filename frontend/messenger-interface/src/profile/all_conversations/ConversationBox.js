@@ -9,15 +9,15 @@ const Conversation = (props) => {
       >
         {/* <img  className="profile-picture" /> */}
         <div className="last-conversation-details" >
-        <p className="conv-last-sender" >
+        <p className="conv-other" >
           <span>
             {props.conversationContent.other.firstname}
           </span>
-          <span> {props.conversationContent.other.lastname}{`:`}</span>
+          <span> {props.conversationContent.other.lastname}</span>
         </p>
         <p className="conv-last-message" >
         <span>{props.conversationContent.last_sender.firstname}</span>
-          <span> {props.conversationContent.last_sender.lastname}{`:`}</span>
+          <span> {props.conversationContent.last_sender.lastname}{`: `}</span>
           <span>{props.conversationContent.messages.msg_content}</span>
         </p>
         <p className="conv-last-timestamp" > {props.conversationContent.timestamp.time} </p>

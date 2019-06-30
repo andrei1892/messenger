@@ -123,12 +123,12 @@ body {
   grid-template-columns: 80% 20%;
 }
 
-.conv-last-sender, .conv-last-message, .conv-last-timestamp{
+.conv-other, .conv-last-message, .conv-last-timestamp{
   margin: 0;
   font-size: 90%;
 }
 
-.conv-last-sender, .conv-last-message{
+.conv-other, .conv-last-message{
   grid-column: 1/1;
 }
 
