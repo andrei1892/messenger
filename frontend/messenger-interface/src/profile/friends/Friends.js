@@ -1,4 +1,5 @@
 import React from "react";
+import FriendWrapper from "./FriendBox";
 
 const Friends = props => {
   if (
@@ -14,7 +15,7 @@ const Friends = props => {
   else {
     return (
       <div className="frienship-category">
-        <div className="friends">
+        {/* <div className="">
           <h5> Friends </h5>
           {props.friends.map((friend, key) => {
             return (
@@ -24,10 +25,12 @@ const Friends = props => {
                   <span className="px-1">{friend.lastname}</span>
                 </p>
               </div>
+              <FriendWrapper key={key} firstname={friend.firstname} lastname={friend.lastname} />
             );
           })}
-        </div>
-        <div className="pending-requests">
+        </div> */}
+        <FriendWrapper list={props.friends} category={"Friends"} />
+        {/* <div className="">
           {props.pendingFrReq.length !== 0 ? (
             <>
               <h5> Friend requests </h5>
@@ -49,12 +52,30 @@ const Friends = props => {
                       Accept
                     </button>
                   </div>
+                  <FriendWrapper key={key} id={pending.id} firstname={pending.firstname} lastname={pending.lastname} >
+                     <button
+                      className="btn btn-add-friend"
+                      onClick={props.acceptRequest}
+                    >
+                      Accept
+                    </button>
+                  </FriendWrapper>
                 );
               })}
             </>
           ) : null}
-        </div>
-        <div className="requests-sent">
+        </div> */}
+        {props.pendingFrReq.length !== 0 ? (
+          <FriendWrapper list={props.pendingFrReq} category={"Friend Requests"}>
+            <button
+              className="btn btn-add-friend"
+              onClick={props.acceptRequest}
+            >
+              Accept
+            </button>
+          </FriendWrapper>
+        ) : null}
+        {/* <div className="">
           {props.awaitingFrRes.length !== 0 ? (
             <>
               <h5>Requests sent</h5>
@@ -71,11 +92,25 @@ const Friends = props => {
                     </p>
                     <img src="" alt="-awaiting" />
                   </div>
+                  <FriendWrapper
+                    key={key}
+                    id={awaiting.id}
+                    firstname={awaiting.firstname}
+                    lastname={awaiting.lastname}
+                  >
+                    <img src="" alt="-awaiting" />
+                  </FriendWrapper>
                 );
               })}
             </>
           ) : null}
-        </div>
+        </div> */}
+
+        {props.awaitingFrRes.length !== 0 ? (
+          <FriendWrapper list={props.awaitingFrRes} category={"Requests sent"}>
+            <img src="" alt="-awaiting" />
+          </FriendWrapper>
+        ) : null}
       </div>
     );
   }

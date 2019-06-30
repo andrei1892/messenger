@@ -169,56 +169,64 @@ class Profile extends Component {
       });
   };
 
-  messageContainer = ev => {
-    //console.log(ev.target)
-    this.setState({ msg: ev.target.value });
+  getInput = ev => {
+    // this.setState({ msg: ev.target.value });
+    this.setState({ [ev.target.id]: ev.target.value });
   };
 
   sendMessage = ev => {
-    console.log(this.state.msg);
-    if (this.state.msg === "") {
+
+    if (this.state.msg.match(/\n/g)) {
+      this.setState(prevstate => {
+        let msg = prevstate.msg.trim();    // replace(\r\n|\n|\r)/gm, " ");
+        return { msg:msg };
+      });
       return null;
     }
-    console.log(ev.target.offsetParent.offsetParent.id);
-    axios
-      .post(
-        "http://localhost:4000/user/send_message",
-        {
-          message: this.state.msg,
-          conversationId: ev.target.offsetParent.offsetParent.id
-        },
-        {
-          headers: {
-            token: localStorage.getItem("token")
-          }
-        }
-      )
-      .then(response => {
-        this.setState({ msg: "" });
-        axios
-          .get(
-            "http://localhost:4000/user/get_conversation?id=" + response.data.convId,
-            {
-              headers: {
-                token: localStorage.getItem("token")
-              }
+  
+    if (this.state.msg) {
+         if (ev.type === "click" || ev.key === "Enter") {
+      axios
+        .post(
+          "http://localhost:4000/user/send_message",
+          {
+            message: this.state.msg,
+            conversationId: ev.target.offsetParent.offsetParent.id
+          },
+          {
+            headers: {
+              token: localStorage.getItem("token")
             }
-          )
-          .then(response => {
-            this.setState(prevstate => {
-              let crtConversation = response.data.conversation;
-              crtConversation.isOn = true;
-              crtConversation.userId = prevstate.myData.id;
-              return {
-                crtConversation: crtConversation
-              };
+          }
+        )
+        .then(response => {
+          this.setState({ msg: "" });
+          axios
+            .get(
+              "http://localhost:4000/user/get_conversation?id=" +
+                response.data.convId,
+              {
+                headers: {
+                  token: localStorage.getItem("token")
+                }
+              }
+            )
+            .then(response => {
+              this.setState(prevstate => {
+                let crtConversation = response.data.conversation;
+                crtConversation.isOn = true;
+                crtConversation.userId = prevstate.myData.id;
+                return {
+                  crtConversation: crtConversation
+                };
+              });
+            })
+            .catch(err => {
+              console.log(err);
             });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      })
-      .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+    }}
   };
 
   render() {
@@ -232,7 +240,7 @@ class Profile extends Component {
           />
           <CurrentConversation
             crtConversation={this.state.crtConversation}
-            messageContainer={this.messageContainer}
+            getInput={this.getInput}
             sendMessage={this.sendMessage}
             msg={this.state.msg}
           />
