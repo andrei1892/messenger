@@ -1,5 +1,5 @@
 const Variables = { 
-   defaultServerAdress: "http://localhost:4000/"
+   server: "http://localhost:4000/"
 }
 
 export default Variables;
