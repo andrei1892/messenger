@@ -20,7 +20,7 @@ const FriendsSuggestions = props => {
               </p>
               <button
                 className="btn btn-add-friend"
-                onClick={props.sendFriendRequest}
+                onClick={props.sendFrReq}
               >
                 Add Friend
               </button>

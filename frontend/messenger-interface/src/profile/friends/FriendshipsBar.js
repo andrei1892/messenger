@@ -15,11 +15,11 @@ class Friendships extends Component {
           friends={this.props.friends}
           pendingFrReq={this.props.pendingFrReq}
           awaitingFrRes={this.props.awaitingFrRes}
-          acceptRequest={this.props.acceptRequest}
+          frReqResponse={this.props.frReqResponse}
         />
         <br />
         <FriendsSuggestions
-          sendFriendRequest={this.props.sendFriendRequest}
+          sendFrReq={this.props.sendFrReq}
           suggestions={this.props.suggestions}
         />
       </div>

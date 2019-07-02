@@ -246,11 +246,12 @@ const get_conversation = (req, res) => {
   }
   let convId = new ObjectID(req.query.id);
   MESSAGES.findOne({ _id: convId }) // {participants: 0}
-    .then(response =>{
-      //set seen value;
-      console.log(response);
-      console.log(response.seen)
-      res.status(200).json({ conversation: response })
+    .then( conv =>{
+       conv.seen = true;
+       conv.save( (err, response) => {
+        if(err) res.status(400).json({ message: err });
+        else res.status(200).json({ conversation: conv })
+      })
   })
     .catch(err => res.status(404).json({ message: "Nothing found", err: err }));
 };
@@ -279,7 +280,7 @@ const send_friend_request = (req, res) => {
         ) {
           senderResponse.waiting_for_confirmation.push(rec_id.toString());
           senderResponse.last_activity = Date.now();
-          senderResponse.save((err, result) => {
+          senderResponse.save((err, response) => {
             if (err) res.status(400).json({ message: err });
           });
 
@@ -299,7 +300,7 @@ const send_friend_request = (req, res) => {
                 )
               ) {
                 receiverResponse.requests_to_confirm.push(req.payload.id);
-                receiverResponse.save((err, result) => {
+                receiverResponse.save((err, response) => {
                   if (err) res.status(400).json({ message: err });
                   else res.status(200).json({ message: "Friend Request Sent" });
                 });
@@ -320,43 +321,62 @@ const send_friend_request = (req, res) => {
 
 const accept_friend_request = (req, res) => {
   USER.findOne({ username: req.payload.username }).then(user => {
-    if (user === null) res.status(404).json({ message: "No user found" });
+    if (user === null) res.status(403).json({ message: "Request denied" });
     else {
+      console.log(req.body);
       identifier(req.body.friend).then(friend => {
-        // find the sender_user
-        //# on accepting a request ; a new conversation is created ;
-        let newConversation = new MESSAGES({
-          participants: [user._id, friend._id],
-          last_sender: user._id,
-          seen: false
-        });
-        newConversation.save();
-        // remove the user from waiting list on sender  & add to friend list
-        friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
-          id => id != req.payload.id
-        );
-        friend.friends.push({
-          friend: user._id,
-          conversation: newConversation._id
-        });
-        friend.save();
-        // remove the sender on crt_user & add sender to user list
-        user.requests_to_confirm = user.requests_to_confirm.filter(
-          id => id != req.body.friend
-        );
-        user.friends.push({
-          friend: friend._id,
-          conversation: newConversation._id
-        });
-        user.last_activity = Date.now();
-        user.save((err, result) => {
-          if (err) {
-            res.status(409).json({ accepted: false, message: err });
-          } else
-            res
-              .status(200)
-              .json({ accepted: true, message: "Request Accepted" });
-        });
+        if (req.body.response === "accept") {
+          // find the sender_user
+          //# on accepting a request ; a new conversation is created ;
+          let newConversation = new MESSAGES({
+            participants: [user._id, friend._id],
+            last_sender: user._id,
+            seen: false
+          });
+          newConversation.save();
+          // remove the user from waiting list on sender  & add to friend list
+          friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
+            id => id != req.payload.id
+          );
+          friend.friends.push({
+            friend: user._id,
+            conversation: newConversation._id
+          });
+          friend.save();
+          // remove the sender on crt_user & add sender to user list
+          user.requests_to_confirm = user.requests_to_confirm.filter(
+            id => id != req.body.friend
+          );
+          user.friends.push({
+            friend: friend._id,
+            conversation: newConversation._id
+          });
+          user.last_activity = Date.now();
+          user.save((err, response) => {
+            if (err) {
+              res.status(409).json({ accepted: false, message: err });
+            } else
+              res
+                .status(200)
+                .json({ accepted: true, message: "Request Accepted" });
+          });
+        } else if (req.body.response === "reject") {
+          friend.waiting_for_confirmation = friend.waiting_for_confirmation.filter(
+            id => id != req.payload.id
+          );
+          friend.save();
+          user.requests_to_confirm = user.requests_to_confirm.filter(
+            id => id != req.body.friend
+          );
+          user.save((err, response) => {
+            if (err) {
+              res.status(409).json({ accepted: false, message: err });
+            } else
+              res
+                .status(200)
+                .json({ accepted: false, message: "Request Rejected" });
+          });
+        }
       });
     }
   });
@@ -366,32 +386,32 @@ const send_message = (req, res) => {
   let convId = new ObjectID(req.body.conversationId);
   let userId = new ObjectID(req.payload.id);
   MESSAGES.findOne({ _id: { $in: convId } })
-    .then(response => {
+    .then(conv => {
       // check if token_id is part of the conversations participants ; security check
-      let check = response.participants.find(
+      let check = conv.participants.find(
         partcipantId => partcipantId.toString() === req.payload.id.toString()
       );
       if (check) {
-        response.messages.push({
+        conv.messages.push({
           sender: userId,
           msg_content: req.body.message
         });
-        response.last_sender = userId;
-        response.last_update = Date.now();
-
-        response.save((err, result) => {
+        conv.last_sender = userId;
+        conv.last_update = Date.now();
+        conv.seen = false;
+        conv.save((err, response) => {
           if (err) res.status(400).json({ message: err });
         });
 
         identifier(userId).then(user => {
           user.last_activity = Date.now();
-          user.save((err, result) => {
+          user.save((err, response) => {
             if (err) {
               res.status(409).json({ message: err });
             } else
               res
                 .status(200)
-                .json({ convId: response._id, message: "mesage sent" });
+                .json({ convId: conv._id, message: "mesage sent" });
           });
         });
       } else
