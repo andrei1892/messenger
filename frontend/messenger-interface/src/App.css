@@ -104,6 +104,11 @@ body {
   overflow: hidden;
 }
 
+.conversations-list a{
+  text-decoration: none;
+  color: black;
+}
+
 .conversations-list:hover {
   overflow-y: auto;
 }
@@ -112,7 +117,6 @@ body {
   overflow: hidden;
   font-size: 80%;
   justify-content: flex-start;
-  cursor: pointer;
   z-index: 100;
 }
 

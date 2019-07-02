@@ -40,7 +40,7 @@ class CurrentConversation extends Component {
         )
         .then(response => {
           console.log(response);
-          this.setState({ searchMessage: "" , searchResponse: response.data.search });
+          this.setState({ searchResponse: response.data.search });
         });
     }
   };
