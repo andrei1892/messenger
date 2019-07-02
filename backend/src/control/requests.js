@@ -246,7 +246,12 @@ const get_conversation = (req, res) => {
   }
   let convId = new ObjectID(req.query.id);
   MESSAGES.findOne({ _id: convId }) // {participants: 0}
-    .then(response => res.status(200).json({ conversation: response }))
+    .then(response =>{
+      //set seen value;
+      console.log(response);
+      console.log(response.seen)
+      res.status(200).json({ conversation: response })
+  })
     .catch(err => res.status(404).json({ message: "Nothing found", err: err }));
 };
 
@@ -273,6 +278,7 @@ const send_friend_request = (req, res) => {
           )
         ) {
           senderResponse.waiting_for_confirmation.push(rec_id.toString());
+          senderResponse.last_activity = Date.now();
           senderResponse.save((err, result) => {
             if (err) res.status(400).json({ message: err });
           });
@@ -342,6 +348,7 @@ const accept_friend_request = (req, res) => {
           friend: friend._id,
           conversation: newConversation._id
         });
+        user.last_activity = Date.now();
         user.save((err, result) => {
           if (err) {
             res.status(409).json({ accepted: false, message: err });
@@ -371,13 +378,21 @@ const send_message = (req, res) => {
         });
         response.last_sender = userId;
         response.last_update = Date.now();
+
         response.save((err, result) => {
-          if (err) {
-            res.status(409).json({ message: err });
-          } else
-            res
-              .status(200)
-              .json({ convId: response._id, message: "mesage sent" });
+          if (err) res.status(400).json({ message: err });
+        });
+
+        identifier(userId).then(user => {
+          user.last_activity = Date.now();
+          user.save((err, result) => {
+            if (err) {
+              res.status(409).json({ message: err });
+            } else
+              res
+                .status(200)
+                .json({ convId: response._id, message: "mesage sent" });
+          });
         });
       } else
         res

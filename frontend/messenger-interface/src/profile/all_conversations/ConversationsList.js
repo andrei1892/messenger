@@ -47,33 +47,57 @@ class AllConversations extends Component {
   constructor(props) {
     super();
     this.state = {
-      isRendered: true
+      dataIsLoading: true,
+      dataLoaded: true
     };
   }
 
-  setFirstConversation = ()=>{
-    this.setState({isRendered: false})
+  // componentDidMount() {
+  //   // this.props.getConversation(this.props.conversations[0]._id);
+  //   console.log(this.props.conversations);
+  // }
+  componentDidUpdate(prevProps) {
+    if (this.props.conversations !== prevProps.conversations) {
+      // this.setState({ dataIsLoading: false });
+      // console.log(this.state.dataLoaded);
+      if (this.state.dataLoaded && this.props.conversations.length > 0) {
+        this.props.getConversation(this.props.conversations[0]._id);
+      }
+      this.setState({ dataLoaded: false, dataIsLoading: false });
+    }
   }
 
+  setFirstConversation = () => {
+    this.setState({ dataIsLoading: false });
+  };
+
   render() {
-    return (
-      <nav className="conversations-list column">
-        <input className="search" placeholder="Search conversations" />
-        {this.props.conversations.map((conversationContent, key) => {
-          if (key === 0 && this.state.isRendered === true) {
-            this.props.getConversation(conversationContent._id);
-            this.setFirstConversation();
-          }
-          return (
-            <Conversation
-              key={key}
-              conversationContent={conversationContent}
-              getConversation={this.props.getConversation}
-            />
-          );
-        })}
-      </nav>
-    );
+    if (this.state.dataIsLoading) {
+      return (
+        <nav className="conversations-list column">
+          <input className="search" placeholder="Search conversations" />
+          <h3>Loading...</h3>
+        </nav>
+      );
+    } else
+      return (
+        <nav className="conversations-list column">
+          <input className="search" placeholder="Search conversations" />
+          {this.props.conversations.map((conversationContent, key) => {
+            // if (key === 0 && this.state.dataIsLoading === true) {
+            //   if( this.state.dataIsLoading ){ this.props.getConversation(conversationContent._id)};
+            //   this.setFirstConversation();
+            // }
+            return (
+              <Conversation
+                key={key}
+                conversationContent={conversationContent}
+                getConversation={this.props.getConversation}
+              />
+            );
+          })}
+        </nav>
+      );
   }
 }
 
