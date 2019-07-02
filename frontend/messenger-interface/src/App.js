@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+
 import LoginForm from "./first-page/Login";
 import RegisterForm from "./first-page/Register";
 import Profile from "./profile/Profile";
+
 import "./App.css";
 
 class App extends Component {
