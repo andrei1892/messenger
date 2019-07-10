@@ -51,7 +51,7 @@ class Profile extends Component {
 
     FetchData.GetConversationsList()
       .then(response => {
-        this.setState({ conversations: response.data.conversations });
+        this.setState({ conversations: response.data.conversations }, (state) => console.log(this.state) );
       })
       .catch(err => console.log(`get conv - eroare la catch: ${err}`));
   }
@@ -82,7 +82,9 @@ class Profile extends Component {
 
         FetchData.GetFriendsSuggestion()
           .then(response => {
-            this.setState({ suggestions: response.data.suggestions });
+            this.setState({ suggestions: response.data.suggestions }, () => {
+              console.log(this.state);
+            });
           })
           .catch(err => console.log(`get conv - eroare la catch: ${err}`));
       })
@@ -135,7 +137,7 @@ class Profile extends Component {
       .catch(err => console.log(err));
   };
 
-  getConversation = conversationId => {
+  getConversation = (conversationId, history) => {
     FetchData.GetConversation(conversationId)
       .then(response => {
         this.setState(prevstate => {
@@ -147,7 +149,9 @@ class Profile extends Component {
           };
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        history.push("/profile/"+this.state.conversations[0]._id)
+      });
   };
 
   getInput = ev => {
@@ -206,22 +210,26 @@ class Profile extends Component {
       <div className="page-container">
         <UserInfo data={this.state.myData} />
         <main className="main-wrapper ">
-          <BrowserRouter>
-            <AllConversations
+          <BrowserRouter>        
+            <Route path={["/profile/:id","/profile"]} render={(props) =>
+               <AllConversations
               conversations={this.state.conversations}
               getConversation={this.getConversation}
-            />
-            {/* <Route path="/profile/:id" render = { () => <CurrentConversation
+              {...props}
+            
+            />}/>
+            <CurrentConversation
               crtConversation={this.state.crtConversation}
               getInput={this.getInput}
+              
               sendMessage={this.sendMessage}
-              msg={this.state.msg} /> } /> */}
-            <CurrentConversation
+              msg={this.state.msg} />
+            {/* <CurrentConversation
               crtConversation={this.state.crtConversation}
               getInput={this.getInput}
               sendMessage={this.sendMessage}
               msg={this.state.msg}
-            />
+            /> */}
             <FriendshipsBar
               friends={this.state.friends}
               pendingFrReq={this.state.pendingFrReq}

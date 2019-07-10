@@ -14,10 +14,10 @@ class CurrentConversation extends Component {
     this.scrollToLast();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.crtConversation._id !== prevProps.crtConversation._id) {
+  componentDidUpdate(prevProps) { // verificare id + nou mesaj props -> cheama functia
+    //if (this.props.crtConversation._id !== prevProps.crtConversation._id || this.props.msg   ) {
       this.scrollToLast();
-    }
+   // }
   }
 
   scrollToLast = () =>
