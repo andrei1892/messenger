@@ -9,7 +9,7 @@ const LoginForm = props => {
     ev.preventDefault();
     axios
       .post("http://localhost:4000/login", {
-        username: props.username.toLowerCase(),
+        username: props.username, //.toLowerCase(), - if username is empty props is undefined
         password: props.password
       })
       .then(response => {
