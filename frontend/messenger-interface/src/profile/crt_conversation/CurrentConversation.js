@@ -15,9 +15,9 @@ class CurrentConversation extends Component {
   }
 
   componentDidUpdate(prevProps) { // verificare id + nou mesaj props -> cheama functia
-    //if (this.props.crtConversation._id !== prevProps.crtConversation._id || this.props.msg   ) {
-      this.scrollToLast();
-   // }
+    if (this.props.crtConversation._id !== prevProps.crtConversation._id || this.props.msg   ) {
+     this.scrollToLast();
+   }
   }
 
   scrollToLast = () =>
