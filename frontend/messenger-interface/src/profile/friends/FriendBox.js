@@ -7,10 +7,10 @@ const FriendWrapper = props => {
       {props.list.map((item, key) => {
         return (
           <div key={key} className="info-box-wrapper friend-box" id={item.id}>
-            <p>
+            <div>
               <span className="px-1">{item.firstname}</span>
               <span>{item.lastname}</span>
-            </p>
+            </div>
             {props.children}
           </div>
         );

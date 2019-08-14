@@ -14,10 +14,10 @@ const FriendsSuggestions = props => {
               className="info-box-wrapper friend-box"
               id={suggestion._id}
             >
-              <p>
+              <div>
                 <span className="px-1">{suggestion.firstname}</span>
                 <span>{suggestion.lastname}</span>
-              </p>
+              </div>
               <button
                 className="btn btn-add-friend"
                 onClick={props.sendFrReq}
