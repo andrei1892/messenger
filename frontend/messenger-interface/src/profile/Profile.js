@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import Proptypes from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
 import axios from "axios";
 
-import UserInfo from "./info/UserInfo";
-import AllConversations from "./all_conversations/ConversationsList";
+import UserInfo from "./UserInfo/UserInfo";
+import AllConversationsList from "./ConversationsPanel/ConversationsList";
 import CurrentConversation from "./crt_conversation/CurrentConversation";
-import FriendshipsBar from "./friends/FriendshipsBar";
+import FriendsPanel from "./FriendsPanel/FriendsPanel";
 import * as FetchData from "../helpers/GetRequests"
 
 
@@ -13,11 +14,11 @@ class Profile extends Component {
   constructor(props) {
     super();
     this.state = {
-      myData: {},
+      userData: {},
       friends: [],
-      pendingFrReq: [],
-      awaitingFrRes: [],
-      suggestions: [],
+      pendingRequests: [],
+      awaitingRequests: [],
+      friendsSuggestions: [],
       conversations: [],
       msg: "",
       crtConversation: {
@@ -29,7 +30,7 @@ class Profile extends Component {
   componentDidMount() {
     FetchData.GetPersonalData()
       .then(response => {
-        this.setState({ myData: response.data });
+        this.setState({ userData: response.data });
       })
       .catch(err => console.log(`get my data - eroare la catch: ${err}`));
 
@@ -37,17 +38,17 @@ class Profile extends Component {
       .then(response => {
         this.setState({
           friends: response.data.friends,
-          pendingFrReq: response.data.pending,
-          awaitingFrRes: response.data.awaiting
+          pendingRequests: response.data.pending,
+          awaitingRequests: response.data.awaiting
         });
       })
       .catch(err => console.log(`get friends - eroare la catch: ${err}`));
 
     FetchData.GetFriendsSuggestion()
       .then(response => {
-        this.setState({ suggestions: response.data.suggestions });
+        this.setState({ friendsSuggestions: response.data.suggestions });
       })
-      .catch(err => console.log(`get suggestions - eroare la catch: ${err}`));
+      .catch(err => console.log(`get friendsSuggestions - eroare la catch: ${err}`));
 
     FetchData.GetConversationsList()
       .then(response => {
@@ -56,7 +57,7 @@ class Profile extends Component {
       .catch(err => console.log(`get conv - eroare la catch: ${err}`));
   }
 
-  sendFrReq = ev => {
+  sendFriendRequest = ev => {
     axios
       .post(
         "http://localhost:4000/user/send_friend_request",
@@ -74,15 +75,15 @@ class Profile extends Component {
           .then(response => {
             this.setState({
               friends: response.data.friends,
-              pendingFrReq: response.data.pending,
-              awaitingFrRes: response.data.awaiting
+              pendingRequests: response.data.pending,
+              awaitingRequests: response.data.awaiting
             });
           })
           .catch(err => console.log(`get fr - eroare la catch: ${err}`));
 
         FetchData.GetFriendsSuggestion()
           .then(response => {
-            this.setState({ suggestions: response.data.suggestions }, () => {
+            this.setState({ friendsSuggestions: response.data.suggestions }, () => {
               console.log(this.state);
             });
           })
@@ -91,7 +92,7 @@ class Profile extends Component {
       .catch(err => console.log(err));
   };
 
-  frReqResponse = ev => {
+  requestResponse = ev => {
     axios
       .post(
         "http://localhost:4000/user/accept_request",
@@ -111,8 +112,8 @@ class Profile extends Component {
             .then(response => {
               this.setState({
                 friends: response.data.friends,
-                pendingFrReq: response.data.pending,
-                awaitingFrRes: response.data.awaiting
+                pendingRequests: response.data.pending,
+                awaitingRequests: response.data.awaiting
               });
             })
             .catch(err => console.log(`get fr - eroare la catch: ${err}`));
@@ -121,16 +122,16 @@ class Profile extends Component {
           .then(response => {
             this.setState({
               friends: response.data.friends,
-              pendingFrReq: response.data.pending,
-              awaitingFrRes: response.data.awaiting
+              pendingRequests: response.data.pending,
+              awaitingRequests: response.data.awaiting
             });
           });
           FetchData.GetFriendsSuggestion()
             .then(response => {
-              this.setState({ suggestions: response.data.suggestions });
+              this.setState({ friendsSuggestions: response.data.suggestions });
             })
             .catch(err =>
-              console.log(`get suggestions - eroare la catch: ${err}`)
+              console.log(`get friendsSuggestions - eroare la catch: ${err}`)
             );
         }
       })
@@ -143,7 +144,7 @@ class Profile extends Component {
         this.setState(prevstate => {
           let crtConversation = response.data.conversation;
           crtConversation.isOn = true;
-          crtConversation.userId = prevstate.myData.id;
+          crtConversation.userId = prevstate.userData.id;
           return {
             crtConversation: crtConversation
           };
@@ -189,7 +190,7 @@ class Profile extends Component {
                 this.setState(prevstate => {
                   let crtConversation = conv.data.conversation;
                   crtConversation.isOn = true;
-                  crtConversation.userId = prevstate.myData.id;
+                  crtConversation.userId = prevstate.userData.id;
                   return {
                     crtConversation: crtConversation
                   };
@@ -205,18 +206,17 @@ class Profile extends Component {
   };
 
   render() {
-    //const firstConv = this.state.conversations[0]._id;
+    const {friends, pendingRequests, friendsSuggestions, awaitingRequests} = this.state;
     return (
       <div className="page-container">
-        <UserInfo data={this.state.myData} />
+        <UserInfo data={this.state.userData} />
         <main className="main-wrapper ">
           <BrowserRouter>        
             <Route path={["/profile/:id","/profile"]} render={(props) =>
-               <AllConversations
+               <AllConversationsList
               conversations={this.state.conversations}
               getConversation={this.getConversation}
               {...props}
-            
             />}/>
             <CurrentConversation
               crtConversation={this.state.crtConversation}
@@ -224,19 +224,13 @@ class Profile extends Component {
               
               sendMessage={this.sendMessage}
               msg={this.state.msg} />
-            {/* <CurrentConversation
-              crtConversation={this.state.crtConversation}
-              getInput={this.getInput}
-              sendMessage={this.sendMessage}
-              msg={this.state.msg}
-            /> */}
-            <FriendshipsBar
-              friends={this.state.friends}
-              pendingFrReq={this.state.pendingFrReq}
-              awaitingFrRes={this.state.awaitingFrRes}
-              suggestions={this.state.suggestions}
-              sendFrReq={this.sendFrReq}
-              frReqResponse={this.frReqResponse}
+            <FriendsPanel
+              friends={friends}
+              pendingRequests={pendingRequests}
+              awaitingRequests={awaitingRequests}
+              friendsSuggestions={friendsSuggestions}
+              sendFriendRequest={this.sendFriendRequest}
+              requestResponse={this.requestResponse}
             />
           </BrowserRouter>
         </main>

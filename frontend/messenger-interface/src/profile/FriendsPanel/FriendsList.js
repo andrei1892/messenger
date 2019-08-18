@@ -1,11 +1,11 @@
 import React from "react";
 import FriendWrapper from "./FriendBox";
 
-const Friends = props => {
+const FriendsList = props => {
   if (
     props.friends.length === 0 &&
-    props.pendingFrReq.length === 0 &&
-    props.awaitingFrRes.length === 0
+    props.pendingRequests.length === 0 &&
+    props.awaitingRequests.length === 0
   )
     return (
       <div className="frienship-category">
@@ -16,28 +16,28 @@ const Friends = props => {
     return (
       <div className="frienship-category">
         <FriendWrapper list={props.friends} category={"Friends"} />
-        {props.pendingFrReq.length !== 0 ? (
-          <FriendWrapper list={props.pendingFrReq} category={"Friend Requests"}>
+        {props.pendingRequests.length !== 0 ? (
+          <FriendWrapper list={props.pendingRequests} category={"Friend Requests"}>
             <div>
             <button
               className="btn btn-add-friend"
               value = "accept"
-              onClick={props.frReqResponse}
+              onClick={props.requestResponse}
             >
               Accept
             </button>
             <button
               className="btn btn-add-friend"
               value = "reject"
-              onClick={props.frReqResponse}
+              onClick={props.requestResponse}
             >
               Reject
             </button>
             </div>
           </FriendWrapper>
         ) : null}
-        {props.awaitingFrRes.length !== 0 ? (
-          <FriendWrapper list={props.awaitingFrRes} category={"Requests sent"}>
+        {props.awaitingRequests.length !== 0 ? (
+          <FriendWrapper list={props.awaitingRequests} category={"Requests sent"}>
             <img src="" alt="-awaiting" />
           </FriendWrapper>
         ) : null}
@@ -45,4 +45,4 @@ const Friends = props => {
     );
   }
 };
-export default Friends;
+export default FriendsList;

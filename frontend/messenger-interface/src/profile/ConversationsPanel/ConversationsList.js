@@ -43,7 +43,7 @@ import Conversation from "./ConversationBox";
 //   );
 // };
 
-class AllConversations extends Component {
+class AllConversationsList extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -105,4 +105,4 @@ class AllConversations extends Component {
   }
 }
 
-export default AllConversations;
+export default AllConversationsList;
