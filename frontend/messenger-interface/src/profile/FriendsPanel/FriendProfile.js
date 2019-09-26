@@ -4,7 +4,7 @@ class FriendProfile extends Component{
 
     render(){
         return(
-            <div>
+            <div className = 'friend-profile' >
                 
             </div>
         )
