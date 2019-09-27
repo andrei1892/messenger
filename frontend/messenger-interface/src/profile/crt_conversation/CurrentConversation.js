@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import "./CurrentConversation.css";
 
 class CurrentConversation extends Component {
   constructor(props) {

@@ -1,0 +1,23 @@
+.register-form-container {
+    background-color: lightblue;
+    position: relative;
+    width: 50%;
+  }
+  
+  .close-register-form {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    font-size: 75%;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: lightblue;
+  }
+  
+  .register-input {
+    border-radius: 50px;
+    height: 30px;
+    margin: 5px;
+    text-align: center;
+  }

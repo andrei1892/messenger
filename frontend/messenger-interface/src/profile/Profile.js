@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Proptypes from 'react';
+//import PropTypes from 'prop-types';
 import { BrowserRouter, Route } from "react-router-dom";
 import axios from "axios";
 
@@ -8,6 +8,8 @@ import AllConversationsList from "./ConversationsPanel/ConversationsList";
 import CurrentConversation from "./crt_conversation/CurrentConversation";
 import FriendsPanel from "./FriendsPanel/FriendsPanel";
 import * as FetchData from "../helpers/GetRequests"
+
+import "./Profile.css";
 
 
 class Profile extends Component {
@@ -208,7 +210,7 @@ class Profile extends Component {
   render() {
     const {friends, pendingRequests, friendsSuggestions, awaitingRequests} = this.state;
     return (
-      <div className="page-container">
+      <div className="profile-container">
         <UserInfo data={this.state.userData} />
         <main className="main-wrapper ">
           <BrowserRouter>        

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Conversation from "./ConversationBox";
 
+import Loader from '../../reusables/Loader/Loader';
+
+import "./ConversationsPanel.css"
 // const AllConversations = props => {
 //   const [firstRendered, updateFirstRendered] = React.useState(true);
 //   return (
@@ -81,6 +84,7 @@ class AllConversationsList extends Component {
         <nav className="conversations-list column">
           <input className="search" placeholder="Search conversations" />
           <h3>Loading...</h3>
+          <Loader />
         </nav>
       );
     } else

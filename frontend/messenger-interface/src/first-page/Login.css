@@ -1,0 +1,24 @@
+.login-form-container {
+    background-color: lightblue;
+    width: 50%;
+  }
+  
+  .login-input {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    height: 30px;
+    margin: 5px;
+    text-align: center;
+  }
+  
+  .login-input:focus {
+    border: 1px #0084ff solid;
+    outline: none;
+  }
+  
+  .login-form-container a {
+    font-family: inherit;
+    text-decoration: none;
+    background-color: inherit;
+  }

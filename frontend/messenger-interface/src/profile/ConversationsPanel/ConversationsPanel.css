@@ -1,0 +1,44 @@
+.conversations-list {
+    overflow: hidden;
+  }
+  
+  .conversations-list a{
+    text-decoration: none;
+    color: black;
+  }
+  
+  .conversations-list:hover {
+    overflow-y: auto;
+  }
+  
+  .last-conversation-container{
+    overflow: hidden;
+    font-size: 80%;
+    justify-content: flex-start;
+    z-index: 100;
+  }
+  
+  .last-conversation-details{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 80% 20%;
+  }
+  
+  .conv-other, .conv-last-message, .conv-last-timestamp{
+    margin: 0;
+    font-size: 90%;
+  }
+  
+  .conv-other, .conv-last-message{
+    grid-column: 1/1;
+  }
+  
+  .conv-last-timestamp {
+    grid-column: 2/2;
+  }
+  
+  .conv-participant, .conv-last-message {
+    z-index: 1;
+  }
+  

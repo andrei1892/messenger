@@ -1,0 +1,12 @@
+.profile-container {
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .main-wrapper {
+    display: grid;
+    grid-template-columns: 25% 55% 20%;
+    height: 95%;
+    width: 100%;
+  }

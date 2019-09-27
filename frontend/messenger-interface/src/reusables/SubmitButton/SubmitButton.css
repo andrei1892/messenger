@@ -1,0 +1,10 @@
+.submit-button{
+    background-color: #0084ff;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    height: 30px;
+    margin: 5px;
+    width: 75px;
+    cursor: pointer;
+  }

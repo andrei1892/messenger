@@ -1,8 +1,9 @@
 import React from 'react'
+import "./SubmitButton.css"
 
 const Submit = (props) => {
     return(
-        <button className={props.class} type="submit">
+        <button className='submit-button' type="submit">
         Submit
       </button>
     )

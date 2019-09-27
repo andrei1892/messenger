@@ -24,7 +24,7 @@ body {
   height: 100vh;
 }
 
-/* login form */
+/* login form 
 .login-form-container {
   background-color: lightblue;
   width: 50%;
@@ -50,7 +50,7 @@ body {
   background-color: inherit;
 }
 
-/* register form */
+/* register form 
 .register-form-container {
   background-color: lightblue;
   position: relative;
@@ -74,32 +74,31 @@ body {
   margin: 5px;
   text-align: center;
 }
-
+*/
 /* messenger page */
-.page-container {
+/* .profile-container {
   padding: 0;
   height: 100%;
   width: 100%;
-}
+} */
 
 /* messenger page  -> header */
-.user-info {
+/* .user-info {
   height: 5%;
   display: flex;
-}
+} */
 
 /* messenger page -> main   */
 
-.main-wrapper {
+/* .main-wrapper {
   display: grid;
   grid-template-columns: 25% 55% 20%;
   height: 95%;
   width: 100%;
-}
+} */
 
 
-/* messenger page -> main -> Conversation List ( history )     */
-
+/* messenger page -> main -> Conversation List ( history )   
 .conversations-list {
   overflow: hidden;
 }
@@ -143,6 +142,7 @@ body {
 .conv-participant, .conv-last-message {
   z-index: 1;
 }
+  */
 
 /*  messenger page-> main -> friendships container  */
 .friendships-bar-container {
@@ -171,7 +171,7 @@ body {
 }
 
 /* messenger page -> main -> current Conversation */
-
+/* 
 .current-conversation-wrapper {
   display: flex;
   flex-direction: column;
@@ -240,7 +240,7 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
-}
+} */
 
 /* reusables */
 .column {
@@ -289,7 +289,7 @@ body {
   width: 50%;
 }
 
-.submit-button{
+/* .submit-button{
   background-color: #0084ff;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
@@ -298,6 +298,6 @@ body {
   margin: 5px;
   width: 75px;
   cursor: pointer;
-}
+} */
 
 
