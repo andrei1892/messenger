@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './FriendsPanel.css';
 
 class FriendProfile extends Component{
 

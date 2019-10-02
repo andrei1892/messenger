@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FriendsList from "./FriendsList";
 import FriendsSuggestions from "./FriendsSuggestions";
+import './FriendsPanel.css';
 
 class FriendsPanel extends Component {
   constructor(props) {

@@ -54,6 +54,7 @@ class CurrentConversation extends Component {
     const sender = this.props.crtConversation.userId;
     return (
       <div className="current-conversation-wrapper column">
+        <div className="chat-conversation">
         <input
           className="search mx-auto"
           placeholder="Search"
@@ -62,7 +63,6 @@ class CurrentConversation extends Component {
           value={this.state.searchMessage}
           onKeyPress={this.searchMsg}
         />
-        <div className="chat-conversation">
           {this.props.crtConversation.isOn
             ? this.props.crtConversation.messages.map((msg, key) => (
                 <p

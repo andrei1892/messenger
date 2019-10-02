@@ -1,5 +1,6 @@
 import React from "react";
 import FriendWrapper from "./FriendBox";
+import './FriendsPanel.css';
 
 const FriendsList = props => {
   if (

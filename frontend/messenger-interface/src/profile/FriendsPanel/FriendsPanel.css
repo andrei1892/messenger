@@ -1,0 +1,24 @@
+.friendships-bar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  /* friends */
+  .frienship-category {
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid rgb(213, 213, 241);
+  }
+  
+  .friend-box {
+    justify-content: space-between;
+  }
+  
+  /* suggestions */
+  .btn-add-friend{
+    background-color: beige;
+    border: none;
+    font-size: 80%;
+    border-radius: 15%;
+    cursor: pointer;
+  }

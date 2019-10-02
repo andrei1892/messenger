@@ -1,4 +1,5 @@
 import React from "react";
+import './FriendsPanel.css';
 
 const FriendsSuggestions = props => {
   if (props.friendsSuggestions.length === 0)
