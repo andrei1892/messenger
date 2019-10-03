@@ -2,10 +2,9 @@ import React from 'react';
 import './Loader.css';
 
 const Loader = (props) => {
+    const size = props.size;
     return(
-        <div className='loader'>
-
-        </div>
+        <div className={`loader ${size}`} />
     )
 }
 

@@ -5,7 +5,7 @@ import axios from "axios";
 
 import UserInfo from "./UserInfo/UserInfo";
 import AllConversationsList from "./ConversationsPanel/ConversationsList";
-import CurrentConversation from "./crt_conversation/CurrentConversation";
+import CurrentConversation from "./CurrentConversation/CurrentConversation";
 import FriendsPanel from "./FriendsPanel/FriendsPanel";
 import * as FetchData from "../helpers/GetRequests"
 
