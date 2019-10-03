@@ -22,8 +22,8 @@ class Profile extends Component {
       awaitingRequests: [],
       friendsSuggestions: [],
       conversations: [],
-      msg: "",
-      crtConversation: {
+      message: "",
+      currentConversation: {
         isOn: false
       }
     };
@@ -144,11 +144,11 @@ class Profile extends Component {
     FetchData.GetConversation(conversationId)
       .then(response => {
         this.setState(prevstate => {
-          let crtConversation = response.data.conversation;
-          crtConversation.isOn = true;
-          crtConversation.userId = prevstate.userData.id;
+          let currentConversation = response.data.conversation;
+          currentConversation.isOn = true;
+          currentConversation.userId = prevstate.userData.id;
           return {
-            crtConversation: crtConversation
+            currentConversation: currentConversation
           };
         });
       })
@@ -162,21 +162,21 @@ class Profile extends Component {
   };
 
   sendMessage = ev => {
-    if (this.state.msg.match(/\n/g)) {
+    if (this.state.message.match(/\n/g)) {
       this.setState(prevstate => {
-        let msg = prevstate.msg.trim(); // replace(\r\n|\n|\r)/gm, " ");
-        return { msg: msg };
+        let message = prevstate.message.trim(); // replace(\r\n|\n|\r)/gm, " ");
+        return { message: message };
       });
       return null;
     }
 
-    if (this.state.msg) {
+    if (this.state.message) {
       if (ev.type === "click" || ev.key === "Enter") {
         axios
           .post(
             "http://localhost:4000/user/send_message",
             {
-              message: this.state.msg,
+              message: this.state.message,
               conversationId: ev.target.offsetParent.offsetParent.id
             },
             {
@@ -186,15 +186,15 @@ class Profile extends Component {
             }
           )
           .then(response => {
-            this.setState({ msg: "" });
+            this.setState({ message: "" });
             FetchData.GetConversation(response.data.convId)
               .then(conv => {
                 this.setState(prevstate => {
-                  let crtConversation = conv.data.conversation;
-                  crtConversation.isOn = true;
-                  crtConversation.userId = prevstate.userData.id;
+                  let currentConversation = conv.data.conversation;
+                  currentConversation.isOn = true;
+                  currentConversation.userId = prevstate.userData.id;
                   return {
-                    crtConversation: crtConversation
+                    currentConversation: currentConversation
                   };
                 });
               })
@@ -221,11 +221,11 @@ class Profile extends Component {
               {...props}
             />}/>
             <CurrentConversation
-              crtConversation={this.state.crtConversation}
+              currentConversation={this.state.currentConversation}
               getInput={this.getInput}
               
               sendMessage={this.sendMessage}
-              msg={this.state.msg} />
+              message={this.state.message} />
             <FriendsPanel
               friends={friends}
               pendingRequests={pendingRequests}

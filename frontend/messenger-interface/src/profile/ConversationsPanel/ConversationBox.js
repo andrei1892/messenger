@@ -23,7 +23,7 @@ const Conversation = props => {
               {props.conversationContent.last_sender.lastname}
               {`: `}
             </span>
-            <span>{props.conversationContent.messages.msg_content}</span>
+            <span>{props.conversationContent.messages.message_content}</span>
           </p>
           <p className="conv-last-timestamp">
             {" "}

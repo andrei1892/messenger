@@ -16,7 +16,7 @@ class CurrentConversation extends Component {
   }
 
   componentDidUpdate(prevProps) { // verificare id + nou mesaj props -> cheama functia
-    if (this.props.crtConversation._id !== prevProps.crtConversation._id || this.props.msg   ) {
+    if (this.props.currentConversation._id !== prevProps.currentConversation._id || this.props.message   ) {
      this.scrollToLast();
    }
   }
@@ -24,13 +24,13 @@ class CurrentConversation extends Component {
   scrollToLast = () =>
     this.conv.current.scrollIntoView({ behaviour: "smooth" });
 
-  searchMsg = ev => {
+  searchmessage = ev => {
     if (ev.key === "Enter") {
       axios
         .post(
           "http://localhost:4000/user/search_message",
           {
-            conversationId: this.props.crtConversation._id,
+            conversationId: this.props.currentConversation._id,
             search_message: this.state.searchMessage
           },
           {
@@ -51,7 +51,7 @@ class CurrentConversation extends Component {
   };
 
   render() {
-    const sender = this.props.crtConversation.userId;
+    const sender = this.props.currentConversation.userId;
     return (
       <div className="current-conversation-wrapper column">
         <div className="chat-conversation">
@@ -61,25 +61,25 @@ class CurrentConversation extends Component {
           id="searchMessage"
           onChange={this.getsearch}
           value={this.state.searchMessage}
-          onKeyPress={this.searchMsg}
+          onKeyPress={this.searchmessage}
         />
-          {this.props.crtConversation.isOn
-            ? this.props.crtConversation.messages.map((msg, key) => (
+          {this.props.currentConversation.isOn
+            ? this.props.currentConversation.messages.map((message, key) => (
                 <p
                   key={key}
                   className={
-                    sender === msg.sender
+                    sender === message.sender
                       ? "messaged-sent"
                       : "messaged-received"
                   }
                 >
-                  {msg.msg_content}
+                  {message.message_content}
                 </p>
               ))
             : null}
           <div className="dummy" ref={this.conv} />
         </div>
-        <div className="chat-send" id={this.props.crtConversation._id}>
+        <div className="chat-send" id={this.props.currentConversation._id}>
           <div
             className="message-content-container"
             onKeyPress={this.props.sendMessage}
@@ -88,9 +88,9 @@ class CurrentConversation extends Component {
               className="message-content"
               rows="3"
               placeholder="Send message"
-              id="msg"
+              id="message"
               name="message"
-              value={this.props.msg}
+              value={this.props.message}
               onChange={this.props.getInput}
             />
           </div>

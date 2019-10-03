@@ -1,10 +1,4 @@
 const mongoose = require("mongoose");
-const CONFIG = require("../config");
-
-// mongoose
-//   .connect(CONFIG.DB_ADRESS, { useNewUrlParser: true })
-//   .then(res => console.log("Connection to DB established"))
-//   .catch(err => console.log(err));
 
 var Schema = mongoose.Schema;
 
@@ -16,7 +10,7 @@ var MessagesSchema = new Schema({
     default: [],
     of: {
       sender: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-      msg_content: String
+      message_content: String
     }
   },
   last_sender:  { type: mongoose.Schema.Types.ObjectId, ref: "users" },

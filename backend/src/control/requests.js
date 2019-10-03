@@ -205,8 +205,8 @@ const get_conversations = (req, res) => {
             conv.timestamp = {};
             if (conv.messages.length === 0) {
               conv.messages = {
-                msg_content: "You've got a new friend. Say Hi!"
-              }; //default msg for new conversations
+                message_content: "You've got a new friend. Say Hi!"
+              }; //default message for new conversations
             } else {
               conv.messages = conv.messages[conv.messages.length - 1]; // return only last message
             }
@@ -394,7 +394,7 @@ const send_message = (req, res) => {
       if (check) {
         conv.messages.push({
           sender: userId,
-          msg_content: req.body.message
+          message_content: req.body.message
         });
         conv.last_sender = userId;
         conv.last_update = Date.now();
@@ -432,7 +432,7 @@ const search_message = (req, res) => {
       if (check) {
         let search = new RegExp(req.body.search_message, "g");
         let searchResult = response.messages.reduce((acc, crt) => {
-          if (crt.msg_content.match(search)) acc.push(crt);
+          if (crt.message_content.match(search)) acc.push(crt);
           return acc;
         }, []);
         res.status(200).json({ search: searchResult });
