@@ -1,5 +1,5 @@
 import React from "react";
-import './FriendsPanel.css';
+import '../FriendsPanel.css';
 
 const FriendWrapper = props => {
   return (
@@ -11,6 +11,13 @@ const FriendWrapper = props => {
             <div>
               <span className="px-1">{item.firstname}</span>
               <span>{item.lastname}</span>
+              <button
+              className="btn"
+              value = "info"
+              onClick={props.toggleFriendInfo}
+            >
+              info
+            </button>
             </div>
             {props.children}
           </div>

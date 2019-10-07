@@ -1,5 +1,5 @@
 import React from "react";
-import './FriendsPanel.css';
+import '../FriendsPanel.css';
 
 const FriendsSuggestions = props => {
   if (props.friendsSuggestions.length === 0)
@@ -32,4 +32,4 @@ const FriendsSuggestions = props => {
     );
   }
 };
-export default FriendsSuggestions;
+export {FriendsSuggestions};

@@ -1,6 +1,6 @@
 import React from "react";
 import FriendWrapper from "./FriendBox";
-import './FriendsPanel.css';
+import '../FriendsPanel.css';
 
 const FriendsList = props => {
   if (
@@ -16,7 +16,7 @@ const FriendsList = props => {
   else {
     return (
       <div className="frienship-category">
-        <FriendWrapper list={props.friends} category={"Friends"} />
+        <FriendWrapper list={props.friends} category={"Friends"} toggleFriendInfo={props.toggleFriendInfo} />
         {props.pendingRequests.length !== 0 ? (
           <FriendWrapper list={props.pendingRequests} category={"Friend Requests"}>
             <div>
@@ -46,4 +46,4 @@ const FriendsList = props => {
     );
   }
 };
-export default FriendsList;
+export {FriendsList};
