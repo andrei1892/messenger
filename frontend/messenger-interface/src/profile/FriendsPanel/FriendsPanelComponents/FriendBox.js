@@ -1,7 +1,9 @@
 import React from "react";
+import * as icons from 'react-icons/fa';
 import '../FriendsPanel.css';
 
 const FriendWrapper = props => {
+  console.log(icons)
   return (
     <div>
       <h5>{props.category}</h5>
@@ -11,13 +13,7 @@ const FriendWrapper = props => {
             <div>
               <span className="px-1">{item.firstname}</span>
               <span>{item.lastname}</span>
-              <button
-              className="btn"
-              value = "info"
-              onClick={props.toggleFriendInfo}
-            >
-              info
-            </button>
+              <icons.FaInfo  onClick={props.toggleFriendInfo} />
             </div>
             {props.children}
           </div>
