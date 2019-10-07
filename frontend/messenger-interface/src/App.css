@@ -70,6 +70,17 @@ body {
   width: 50%;
 }
 
+.close-button {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  font-size: 75%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: lightblue;
+}
+
 /* .submit-button{
   background-color: #0084ff;
   -webkit-border-radius: 50px;

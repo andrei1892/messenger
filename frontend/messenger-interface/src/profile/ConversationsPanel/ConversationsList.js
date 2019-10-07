@@ -42,8 +42,7 @@ class AllConversationsList extends Component {
       return (
         <nav className="conversations-list column">
           <input className="search" placeholder="Search conversations" />
-          <h3>Loading...</h3>
-          <Loader />
+          <Loader size={'medium'} />
         </nav>
       );
     } else

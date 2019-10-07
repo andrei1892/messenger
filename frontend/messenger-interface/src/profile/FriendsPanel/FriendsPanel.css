@@ -1,4 +1,5 @@
 .friendships-bar-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -14,6 +15,36 @@
     justify-content: space-between;
   }
   
+  .friend-profile {
+    width: 100%;
+    background-color: red;
+    height: 30vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .friend-profile-close {
+    height: 0;
+  }
+
+  .slide-down {
+    animation-name: slideOutDown;
+    animation-duration: 500ms;
+    animation-timing-function: ease-in-out;
+    transition-property: all;
+  }
+
+  @keyframes slideOutDown {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 30vh;
+    }
+
+  }
+
   /* suggestions */
   .btn-add-friend{
     background-color: beige;

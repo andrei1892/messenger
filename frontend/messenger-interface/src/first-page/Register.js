@@ -32,7 +32,7 @@ const RegisterForm = props => {
     <div className="form-container register-form-container">
       <h3>Please complete all fields</h3>
       <Link to="/">
-        <button className="close-register-form">X</button>
+        <button className="close-button">X</button>
       </Link>
       <form id="register" className="form" method="post" onSubmit={submitRegister}>
         <label htmlFor="registerFirstname">
