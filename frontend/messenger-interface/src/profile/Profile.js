@@ -208,24 +208,23 @@ class Profile extends Component {
   };
 
   render() {
-    const {friends, pendingRequests, friendsSuggestions, awaitingRequests} = this.state;
+    const {userData, friends, pendingRequests, friendsSuggestions, awaitingRequests, conversations, currentConversation, message} = this.state;
     return (
       <div className="profile-container">
-        <UserInfo data={this.state.userData} />
+        <UserInfo data={userData} />
         <main className="main-wrapper ">
           <BrowserRouter>        
             <Route path={["/profile/:id","/profile"]} render={(props) =>
                <AllConversationsList
-              conversations={this.state.conversations}
+              conversations={conversations}
               getConversation={this.getConversation}
               {...props}
             />}/>
             <CurrentConversation
-              currentConversation={this.state.currentConversation}
+              currentConversation={currentConversation}
               getInput={this.getInput}
-              
               sendMessage={this.sendMessage}
-              message={this.state.message} />
+              message={message} />
             <FriendsPanel
               friends={friends}
               pendingRequests={pendingRequests}
