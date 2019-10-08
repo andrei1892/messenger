@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
+import {Button} from '../../../reusables/Button/Button'
 import '../FriendsPanel.css';
 
 class FriendProfile extends Component{
 
     render() {
-
-        if(this.props.on){
+        const {toggle, info, closeFriendInfo } = this.props;
+        if(toggle){
         return(
-            <div className='friend-profile slide-down'>
-                <button className='close-button'
-                onClick={this.props.toggleFriendInfo}
-                >X</button>
+            <div className='friend-profile friend-profile-open slide-down'>
+                <Button classes={'close-button'} onClick = {closeFriendInfo} content={'X'} />
+                <div>{info.firstname} {info.lastname}</div>
+                <div>Email: {info.email}</div>
             </div>
         )}
         else {
             return  (
-            <div className='friend-profile friend-profile-close'>
-            </div>
+            <div className='friend-profile friend-profile-close slide-up' />
             )
         }
     }
