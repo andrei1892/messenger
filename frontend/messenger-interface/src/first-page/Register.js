@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import SubmitButton from '../reusables/SubmitButton/SubmitButton'
+import {Button} from '../reusables/Button/Button'
 import "./Register.css";
 
 const RegisterForm = props => {  
@@ -86,7 +86,7 @@ const RegisterForm = props => {
           onChange={props.getCredentials}
           required
         />
-         <SubmitButton class="submit-button" />
+         <Button type={'submit'} classes={"submit-button"} content={'Register'} />
       </form>
     </div>
   );

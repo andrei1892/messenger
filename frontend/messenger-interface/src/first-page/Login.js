@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import SubmitButton from "../reusables/SubmitButton/SubmitButton";
+import {Button} from "../reusables/Button/Button";
 import "./Login.css"
 
 const LoginForm = props => {
@@ -52,7 +52,7 @@ const LoginForm = props => {
           placeholder="Password"
           onChange={props.getCredentials}
         />
-        <SubmitButton class="submit-button" />
+        <Button type={'submit'} classes={"submit-button"} content={'Log In'} />
       </form>
       <p>
         Don't have an account? <Link to="/register"> Register </Link> now!
