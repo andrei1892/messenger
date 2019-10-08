@@ -69,27 +69,3 @@ body {
   align-items: center;
   width: 50%;
 }
-
-.close-button {
-  position: absolute;
-  top: 2%;
-  right: 2%;
-  font-size: 75%;
-  padding: 0;
-  border: 0;
-  cursor: pointer;
-  background-color: lightblue;
-}
-
-/* .submit-button{
-  background-color: #0084ff;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  height: 30px;
-  margin: 5px;
-  width: 75px;
-  cursor: pointer;
-} */
-
-
