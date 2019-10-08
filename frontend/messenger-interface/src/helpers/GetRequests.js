@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const GetPersonalData = () =>
   axios.get("http://localhost:4000/user/get_my_data", {
-    headers: { token: localStorage.getItem("token") }
+    headers: { 
+      token: localStorage.getItem("token") 
+    }
   });
 
 export const GetFriends = () =>
@@ -16,6 +18,15 @@ export const GetFriendsSuggestion = () =>
   axios.get("http://localhost:4000/user/get_friends_suggestions", {
     headers: {
       token: localStorage.getItem("token")
+    }
+  });
+
+export const GetInfoAbout = userId => axios.get("http://localhost:4000/user/get_info_about", {
+    headers: {
+      token: localStorage.getItem("token")
+    },
+    params:{ 
+      id: userId
     }
   });
 
@@ -33,5 +44,4 @@ export const GetConversation = conversationId =>
       headers: {
         token: localStorage.getItem("token")
       }
-    }
-  );
+    });

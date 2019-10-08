@@ -241,12 +241,14 @@ const get_conversations = (req, res) => {
 };
 
 const get_conversation = (req, res) => {
+  console.log(req.query.id);
+  console.log(req.query);
   if (!req.query.id) {
     res.sendStatus(404);
   }
   let convId = new ObjectID(req.query.id);
   MESSAGES.findOne({ _id: convId }) // {participants: 0}
-    .then( conv =>{
+    .then( conv => {
        conv.seen = true;
        conv.save( (err, response) => {
         if(err) res.status(400).json({ message: err });
@@ -255,6 +257,25 @@ const get_conversation = (req, res) => {
   })
     .catch(err => res.status(404).json({ message: "Nothing found", err: err }));
 };
+
+const get_info_about = (req, res) => {
+  //console.log(req);
+  console.log(req.query);
+  let id = new ObjectID(req.query.id);
+  USER.findOne({_id: id}).then( user => {
+    if( user === null)
+    res.status(404).json({message: 'No user found'})
+    else {
+      // could check if user who makes request is friend with the user he is requesting data about;
+      // restrict info about if they are not friends;
+      const userInfo = {};
+      userInfo.firstname = user.firstname;
+      userInfo.lastname = user.lastname;
+      userInfo.email = user.email;
+      res.status(200).json({userinfo: userInfo})
+    }
+  })
+}
 
 const send_friend_request = (req, res) => {
   let findSender = { username: req.payload.username };
@@ -464,6 +485,7 @@ module.exports = {
   search_friends,
   send_friend_request,
   accept_friend_request,
+  get_info_about,
   get_conversation,
   send_seen_event,
   send_message,
