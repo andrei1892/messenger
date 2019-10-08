@@ -1,5 +1,6 @@
 import React from "react";
 import FriendWrapper from "./FriendBox";
+import {FaHourglassHalf} from 'react-icons/fa';
 import '../FriendsPanel.css';
 
 const FriendsList = props => {
@@ -16,7 +17,7 @@ const FriendsList = props => {
   else {
     return (
       <div className="frienship-category">
-        <FriendWrapper list={props.friends} category={"Friends"} toggleFriendInfo={props.toggleFriendInfo} />
+        <FriendWrapper list={props.friends} category={"Friends"} getFriendInfo={props.getFriendInfo} />
         {props.pendingRequests.length !== 0 ? (
           <FriendWrapper list={props.pendingRequests} category={"Friend Requests"}>
             <div>
@@ -39,7 +40,7 @@ const FriendsList = props => {
         ) : null}
         {props.awaitingRequests.length !== 0 ? (
           <FriendWrapper list={props.awaitingRequests} category={"Requests sent"}>
-            <img src="" alt="-awaiting" />
+            <FaHourglassHalf title='Awaiting Confirmation'/>
           </FriendWrapper>
         ) : null}
       </div>
