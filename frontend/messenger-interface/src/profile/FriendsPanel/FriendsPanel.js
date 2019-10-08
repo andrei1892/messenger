@@ -2,24 +2,34 @@ import React, { Component } from "react";
 import {FriendsList} from "./FriendsPanelComponents/FriendsList";
 import {FriendsSuggestions} from "./FriendsPanelComponents/FriendsSuggestions";
 import {FriendProfile} from "./FriendsPanelComponents/FriendProfile";
+
+import {GetInfoAbout} from '../../helpers/GetRequests';
+
 import './FriendsPanel.css';
 
 class FriendsPanel extends Component {
   constructor(props) {
     super();
     this.state = {
-      displayFriendInfo: false
+      displayFriendInfo: false,
+      friendInfo: {}
     };
   }
 
-  toggleFriendInfo = () => {
-    this.setState( prevState => {
-      let displayFriendInfo = prevState.displayFriendInfo
-      console.log(displayFriendInfo);
-      return { 
-        displayFriendInfo: !displayFriendInfo
-      };
+  getFriendInfo = (id) => {
+    GetInfoAbout(id).then( response => {
+      this.setState({
+          displayFriendInfo: true,
+          friendInfo: response.data.userinfo
+      });
     });
+  }
+
+  closeFriendInfo = () => {
+    return this.setState({
+      displayFriendInfo: false,
+      friendInfo: {}
+  });
   }
 
   render() {
@@ -30,14 +40,18 @@ class FriendsPanel extends Component {
           pendingRequests={this.props.pendingRequests}
           awaitingRequests={this.props.awaitingRequests}
           requestResponse={this.props.requestResponse}
-          toggleFriendInfo={this.toggleFriendInfo}
+          getFriendInfo={this.getFriendInfo}
         />
         <br />
         <FriendsSuggestions
           sendFriendRequest={this.props.sendFriendRequest}
           friendsSuggestions={this.props.friendsSuggestions}
         />
-        <FriendProfile on={this.state.displayFriendInfo}  toggleFriendInfo={this.toggleFriendInfo} />
+        <FriendProfile 
+          toggle={this.state.displayFriendInfo}
+          info = {this.state.friendInfo}
+          closeFriendInfo={this.closeFriendInfo} 
+        />
       </div>
     );
   }
