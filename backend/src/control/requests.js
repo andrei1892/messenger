@@ -241,8 +241,6 @@ const get_conversations = (req, res) => {
 };
 
 const get_conversation = (req, res) => {
-  console.log(req.query.id);
-  console.log(req.query);
   if (!req.query.id) {
     res.sendStatus(404);
   }
@@ -259,8 +257,6 @@ const get_conversation = (req, res) => {
 };
 
 const get_info_about = (req, res) => {
-  //console.log(req);
-  console.log(req.query);
   let id = new ObjectID(req.query.id);
   USER.findOne({_id: id}).then( user => {
     if( user === null)
@@ -344,7 +340,6 @@ const accept_friend_request = (req, res) => {
   USER.findOne({ username: req.payload.username }).then(user => {
     if (user === null) res.status(403).json({ message: "Request denied" });
     else {
-      console.log(req.body);
       identifier(req.body.friend).then(friend => {
         if (req.body.response === "accept") {
           // find the sender_user
