@@ -1,4 +1,18 @@
-.user-info {
+ 
+  header {
     height: 5%;
-    display: flex;
   }
+
+  .info, .user-options {
+    width: 50%;
+    align-self: center;
+  }
+
+  .profile-picture {
+    display: inline-block;
+  }
+
+  .user-options {
+    text-align: end;
+  }
+
