@@ -26,4 +26,8 @@ const FriendWrapper = props => {
   );
 };
 
+FriendWrapper.defaultProps = {
+  getFriendInfo: function(){}
+}
+
 export default FriendWrapper;
