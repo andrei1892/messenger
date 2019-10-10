@@ -19,12 +19,12 @@ const Icon_Type = {
 }
 
  const ICONS = (props) => {
-    const {type, name, iconClass, iconWrapper, title} = props;
+    const {type, name, iconClass, iconWrapper, title , onClick} = props;
     const Icon = Icon_Type[type][name];
     const iconTitle = title ? title : null;
     return(
         <div className={iconWrapper} > 
-        <Icon className={iconClass} title = {iconTitle}/>
+          <Icon className={iconClass} title = {iconTitle} onClick={onClick} />
         </div>
     )
 }

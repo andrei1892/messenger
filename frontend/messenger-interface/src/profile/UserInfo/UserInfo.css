@@ -16,3 +16,8 @@
     text-align: end;
   }
 
+  .action {
+    display: inline-block;
+    cursor: pointer;
+  }
+
