@@ -33,7 +33,7 @@ const LoginForm = props => {
       <h2> Be together, whenever. </h2>
       <form id="login" className="form" onSubmit={logIn}>
         <label htmlFor="loginEmail">
-          <b>Login below</b>
+          <b>Sign in below</b>
         </label>
         <input
           id="loginEmail"
@@ -52,7 +52,7 @@ const LoginForm = props => {
           placeholder="Password"
           onChange={props.getCredentials}
         />
-        <Button type={'submit'} classes={"submit-button"} content={'Login'} />
+        <Button type={'submit'} classes={"submit-button"} content={'Sign In'} />
       </form>
       <p>
         Don't have an account? <Link to="/register"> Register </Link> now!
