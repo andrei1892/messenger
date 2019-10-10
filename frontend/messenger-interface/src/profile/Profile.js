@@ -7,6 +7,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import AllConversationsList from "./ConversationsPanel/ConversationsList";
 import CurrentConversation from "./CurrentConversation/CurrentConversation";
 import FriendsPanel from "./FriendsPanel/FriendsPanel";
+import {ProfileSettings} from './ProfileSettings/ProfileSettings'
 import * as FetchData from "../helpers/GetRequests"
 
 import "./Profile.css";
@@ -17,6 +18,7 @@ class Profile extends Component {
     super();
     this.state = {
       userData: {},
+      openSettings: false,
       friends: [],
       pendingRequests: [],
       awaitingRequests: [],
@@ -235,6 +237,7 @@ class Profile extends Component {
             />
           </BrowserRouter>
         </main>
+            <ProfileSettings open={this.state.openSettings} />
       </div>
     );
   }

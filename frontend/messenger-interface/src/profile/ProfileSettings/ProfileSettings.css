@@ -1,0 +1,11 @@
+.profile-settings-modal {
+    height:70%;
+    width: 70%;
+    border: 1px solid lightslategray;
+    background-color: white;
+    display: none;
+}
+
+.closed {
+    display: none;
+}
