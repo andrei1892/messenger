@@ -1,4 +1,6 @@
 import React from "react";
+import {Button} from '../../../reusables/Button/Button';
+
 import '../FriendsPanel.css';
 
 const FriendsSuggestions = props => {
@@ -19,12 +21,7 @@ const FriendsSuggestions = props => {
                 <span className="px-1">{suggestion.firstname}</span>
                 <span>{suggestion.lastname}</span>
               </div>
-              <button
-                className="btn btn-add-friend"
-                onClick={props.sendFriendRequest}
-              >
-                Add Friend
-              </button>
+              <Button classes={'btn btn-add-friend'} content={'Add Friend'} onClick={props.sendFriendRequest} />
             </div>
           );
         })}

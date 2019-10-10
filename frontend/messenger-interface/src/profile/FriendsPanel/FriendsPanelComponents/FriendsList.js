@@ -1,6 +1,7 @@
 import React from "react";
 import FriendWrapper from "./FriendBox";
-import {FaHourglassHalf} from 'react-icons/fa';
+import {ICONS} from '../../../reusables/Icons/Icons';
+import {Button} from '../../../reusables/Button/Button';
 import '../FriendsPanel.css';
 
 const FriendsList = props => {
@@ -21,26 +22,14 @@ const FriendsList = props => {
         {props.pendingRequests.length !== 0 ? (
           <FriendWrapper list={props.pendingRequests} category={"Friend Requests"}>
             <div>
-            <button
-              className="btn btn-add-friend"
-              value = "accept"
-              onClick={props.requestResponse}
-            >
-              Accept
-            </button>
-            <button
-              className="btn btn-add-friend"
-              value = "reject"
-              onClick={props.requestResponse}
-            >
-              Reject
-            </button>
+              <Button classes={'btn btn-add-friend'} value={'accept'}  content={'Accept'} onClick={props.requestResponse} />
+              <Button classes={'btn btn-add-friend'} value={'reject'}  content={'Reject'} onClick={props.requestResponse} />
             </div>
           </FriendWrapper>
         ) : null}
         {props.awaitingRequests.length !== 0 ? (
           <FriendWrapper list={props.awaitingRequests} category={"Requests sent"}>
-            <FaHourglassHalf title='Awaiting Confirmation'/>
+            <ICONS type={'FaIcons'} name={'FaHourglassHalf'} title={'Awaiting Confirmation'} />
           </FriendWrapper>
         ) : null}
       </div>
