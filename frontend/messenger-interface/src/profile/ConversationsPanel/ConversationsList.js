@@ -14,14 +14,8 @@ class AllConversationsList extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   // this.props.getConversation(this.props.conversations[0]._id);
-  //   console.log(this.props.conversations);
-  // }
   componentDidUpdate(prevProps) {
     if (this.props.conversations !== prevProps.conversations) {
-      // this.setState({ dataIsLoading: false });
-      // console.log(this.state.dataLoaded);
       if (this.state.dataLoaded && this.props.conversations.length > 0) {
         console.log(this.props.match.params);
         this.props.getConversation(this.props.match.params.id || this.props.conversations[0]._id, this.props.history);
@@ -38,17 +32,10 @@ class AllConversationsList extends Component {
   };
 
   render() {
-    if (this.state.dataIsLoading) {
       return (
         <nav className="conversations-list column">
           <input className="search" placeholder="Search conversations" />
-          <Loader size={'medium'} />
-        </nav>
-      );
-    } else
-      return (
-        <nav className="conversations-list column">
-          <input className="search" placeholder="Search conversations" />
+          <Loader size={'medium'} isLoading={this.state.dataIsLoading}>
           {this.props.conversations.map((conversationContent, key) => {
             return (
               <Conversation
@@ -57,10 +44,12 @@ class AllConversationsList extends Component {
                 getConversation={this.props.getConversation}
               />
             );
-          })}
+          })
+          }
+          </Loader>
         </nav>
       );
-  }
+   }
 }
 
 export default AllConversationsList;
