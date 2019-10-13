@@ -3,6 +3,13 @@
     position: relative;
     width: 50%;
   }
+
+  .register-form-container button {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    background-color: #0084ff;
+  }
     
   .register-input {
     border-radius: 50px;
@@ -10,3 +17,4 @@
     margin: 5px;
     text-align: center;
   }
+

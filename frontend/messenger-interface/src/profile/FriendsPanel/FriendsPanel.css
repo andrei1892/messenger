@@ -24,7 +24,7 @@
     margin: 0 10px;
     font-size: 85%;
     border-radius: 50%;
-    background-color: rgb(119, 119, 247);
+    background-color: rgb(26, 46, 88);
     cursor: pointer;
     color: white;
   }
@@ -36,9 +36,18 @@
     top: 0;
     right: 0;
   }
+
+  .friend-profile button {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    color: lightgray;
+    background-color: #424949;
+  }
   
   .friend-profile-open {
     height: 30vh;
+    border-top: 2px lightgray solid;
     border-bottom: 2px lightgray solid;
   }
 

@@ -10,14 +10,15 @@
   }
 
 .close-button {
-  position: absolute;
-  top: 2%;
-  right: 2%;
   font-size: 75%;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
-  background-color: #0084ff;
   color: black;
   cursor: pointer;
+}
+
+button:hover { 
+  color: white;
+  border-color: black;
 }
