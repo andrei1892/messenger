@@ -21,8 +21,9 @@ const LoginForm = props => {
           logging(true);
         } else alert(response.data.message);
       })
-      .catch(err =>{ 
-        alert(err.response.data.message)
+      .catch(err => { 
+        const errorMessage = err.response ? err.response.data.message : 'Server is down, please try again later!';
+        alert(errorMessage )
       });
     ev.target.reset(); 
   };

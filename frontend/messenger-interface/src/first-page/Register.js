@@ -22,7 +22,10 @@ const RegisterForm = props => {
           register(true);
         }
       })
-      .catch(err => alert(err.response.data.message));
+      .catch(err => {
+        const errorMessage = err.response ? err.response.data.message : 'Server is down, please try again later!';
+        alert(errorMessage)
+      });
   };
 
   if (isRegistered) {
