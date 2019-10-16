@@ -1,11 +1,37 @@
-.profile-settings-modal {
-    height:70%;
-    width: 70%;
-    border: 1px solid lightslategray;
-    background-color: white;
-    display: none;
+.profile-settings-menu{
+    z-index: 2000;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 30% 70%;
 }
 
-.closed {
-    display: none;
+.sidebar-wrapper {
+    padding: 5px;
+    border: 1px solid lightgray;
 }
+
+.settings-list {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0;
+    list-style-type: none;
+}
+
+.settings-list-item {
+    height: 10%;
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-list-item:hover {
+    background-color: lightblue;
+    color: white;
+}
+
+/* .settings-list-item::before {
+    content: '>';
+} */

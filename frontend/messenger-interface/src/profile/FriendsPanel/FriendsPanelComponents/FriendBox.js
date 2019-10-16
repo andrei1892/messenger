@@ -1,8 +1,9 @@
 import React from "react";
-import {FaInfo} from 'react-icons/fa';
+import {ICONS} from '../../../reusables/Icons/Icons';
 import '../FriendsPanel.css';
 
 const FriendWrapper = props => {
+
   return (
     <div>
       <h5>{props.category}</h5>
@@ -12,9 +13,11 @@ const FriendWrapper = props => {
             <div className='friend-info' >
               <span className="px-1">{item.firstname}</span>
               <span>{item.lastname}</span>
-              <FaInfo 
+              <ICONS 
+                type={'FaIcons'} 
+                name={'FaInfo'} 
+                iconClass={'info-icon'} 
                 title='About'
-                className='info-icon' 
                 onClick={() => props.getFriendInfo(item.id)}
               />
             </div>
@@ -27,7 +30,7 @@ const FriendWrapper = props => {
 };
 
 FriendWrapper.defaultProps = {
-  getFriendInfo: function(){}
+  getFriendInfo: (id) => {}
 }
 
 export default FriendWrapper;

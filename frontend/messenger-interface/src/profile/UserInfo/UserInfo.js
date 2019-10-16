@@ -7,10 +7,6 @@ const UserInfo = props => {
 
   const [isSignedOut ,  signingOut] = React.useState(false);
 
-  const settings = () => {
-    console.log('settings');
-  }
-
   const signOut = () => {
     localStorage.removeItem("token");
     signingOut(true);
@@ -38,7 +34,7 @@ const UserInfo = props => {
           title={'Settings'} 
           iconClass={'mx-1'} 
           iconWrapper={'action'} 
-          onClick={settings}/>
+          onClick={props.openSettings}/>
         <ICONS 
           type={'IoIcons'}
           name={'IoIosExit'}

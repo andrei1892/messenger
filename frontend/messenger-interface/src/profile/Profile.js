@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-//import PropTypes from 'prop-types';
-import { BrowserRouter, Route } from "react-router-dom";
-import axios from "axios";
 
 import UserInfo from "./UserInfo/UserInfo";
 import AllConversationsList from "./ConversationsPanel/ConversationsList";
 import CurrentConversation from "./CurrentConversation/CurrentConversation";
 import FriendsPanel from "./FriendsPanel/FriendsPanel";
 import {ProfileSettings} from './ProfileSettings/ProfileSettings'
+import { Modal } from "../reusables/Modal/Modal";
+
+import { BrowserRouter, Route } from "react-router-dom";
+import axios from "axios";
 import * as FetchData from "../helpers/GetRequests"
 
 import "./Profile.css";
@@ -209,11 +210,19 @@ class Profile extends Component {
     }
   };
 
+  openSettings = () => {
+    this.setState({openSettings: true});
+  }
+
+  closeSettings = () => {
+    this.setState({openSettings: false});
+  }
+
   render() {
     const {userData, friends, pendingRequests, friendsSuggestions, awaitingRequests, conversations, currentConversation, message} = this.state;
     return (
       <div className="profile-container">
-        <UserInfo data={userData} />
+        <UserInfo data={userData} openSettings={this.openSettings}  />
         <main className="main-wrapper ">
           <BrowserRouter>        
             <Route path={["/profile/:id","/profile"]} render={(props) =>
@@ -237,7 +246,14 @@ class Profile extends Component {
             />
           </BrowserRouter>
         </main>
-            <ProfileSettings open={this.state.openSettings} />
+        <Modal 
+          open={this.state.openSettings} 
+          closeSettings={this.closeSettings}
+          title={'Settings'}
+          size={'large'}
+        >
+            <ProfileSettings  />
+        </Modal>
       </div>
     );
   }
