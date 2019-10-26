@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button} from '../../../reusables/Button/Button'
+import {Button} from 'reusables/Button/Button'
 import '../FriendsPanel.css';
 
 class FriendProfile extends Component{

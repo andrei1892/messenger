@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "target": "es2017",
+      "baseUrl": "src",
+      "paths": {
+        "helpers/*": ["src/helpers/*"],
+        "profile/*": ["src/profile/*"],
+        "reusables/*": ["src/reusables/*"]
+      }
+    },
+    "exclude": ["node_modules"]
+  }

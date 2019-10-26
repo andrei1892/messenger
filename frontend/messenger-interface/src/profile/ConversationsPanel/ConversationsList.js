@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Conversation from "./ConversationBox";
 
-import Loader from '../../reusables/Loader/Loader';
+import Loader from 'reusables/Loader/Loader';
 
 import "./ConversationsPanel.css"
 

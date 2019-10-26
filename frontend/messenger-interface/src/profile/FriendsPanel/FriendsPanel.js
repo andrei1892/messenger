@@ -3,7 +3,7 @@ import {FriendsList} from "./FriendsPanelComponents/FriendsList";
 import {FriendsSuggestions} from "./FriendsPanelComponents/FriendsSuggestions";
 import {FriendProfile} from "./FriendsPanelComponents/FriendProfile";
 
-import {GetInfoAbout} from '../../helpers/GetRequests';
+import {GetInfoAbout} from 'helpers/GetRequests';
 
 import './FriendsPanel.css';
 

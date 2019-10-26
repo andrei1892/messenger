@@ -1,5 +1,5 @@
 import React from "react";
-import {ICONS} from '../../../reusables/Icons/Icons';
+import {ICONS} from 'reusables/Icons/Icons';
 import '../FriendsPanel.css';
 
 const FriendWrapper = props => {

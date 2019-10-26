@@ -1,7 +1,7 @@
 import React from "react";
 import FriendWrapper from "./FriendBox";
-import {ICONS} from '../../../reusables/Icons/Icons';
-import {Button} from '../../../reusables/Button/Button';
+import {ICONS} from 'reusables/Icons/Icons';
+import {Button} from 'reusables/Button/Button';
 import '../FriendsPanel.css';
 
 const FriendsList = props => {

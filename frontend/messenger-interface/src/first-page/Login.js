@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import {Button} from "../reusables/Button/Button";
+import {Button} from "reusables/Button/Button";
 import "./Login.css"
 
 const LoginForm = props => {

@@ -5,11 +5,11 @@ import AllConversationsList from "./ConversationsPanel/ConversationsList";
 import CurrentConversation from "./CurrentConversation/CurrentConversation";
 import FriendsPanel from "./FriendsPanel/FriendsPanel";
 import {ProfileSettings} from './ProfileSettings/ProfileSettings'
-import { Modal } from "../reusables/Modal/Modal";
+import { Modal } from "reusables/Modal/Modal";
 
 import { BrowserRouter, Route } from "react-router-dom";
 import axios from "axios";
-import * as FetchData from "../helpers/GetRequests"
+import * as FetchData from "helpers/GetRequests"
 
 import "./Profile.css";
 

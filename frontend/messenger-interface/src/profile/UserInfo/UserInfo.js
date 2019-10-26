@@ -1,6 +1,6 @@
 import React from "react";
 import {Redirect} from 'react-router-dom';
-import {ICONS} from '../../reusables/Icons/Icons';
+import {ICONS} from 'reusables/Icons/Icons';
 import "./UserInfo.css";
 
 const UserInfo = props => {
