@@ -27,11 +27,20 @@
     align-items: center;
 }
 
-.settings-list-item:hover {
+.settings-list-item:hover{
     background-color: lightblue;
     color: white;
 }
 
-/* .settings-list-item::before {
-    content: '>';
-} */
+.settings-list-item:hover::before {
+    position: absolute;
+    left: 1%;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid white;
+    content: "";
+} 
+
+.settings-list-item:focus {
+    background-color: red;
+  }
