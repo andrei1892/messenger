@@ -6,7 +6,7 @@
     align-items: center;
   }
   
-.form {
+.register-form, .login-form{
     position: relative;
     background-color: lightblue;
     margin: auto;

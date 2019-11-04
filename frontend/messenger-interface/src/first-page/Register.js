@@ -37,7 +37,7 @@ const RegisterForm = props => {
       <Link to="/">
         <Button extraClass={`close-register close-button`} text={'X'} />
       </Link>
-      <form id="register" className="form" method="post" onSubmit={submitRegister}>
+      <form id="register" className="register-form" method="post" onSubmit={submitRegister}>
         <label htmlFor="registerFirstname">
           <b>Firstname</b>
         </label>

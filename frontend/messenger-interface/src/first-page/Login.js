@@ -32,7 +32,7 @@ const LoginForm = props => {
   return (
     <div className="form-container login-form-container">
       <h2> Be together, whenever. </h2>
-      <form id="login" className="form" onSubmit={logIn}>
+      <form id="login" className="login-form" onSubmit={logIn}>
         <label htmlFor="loginEmail">
           <b>Sign in below</b>
         </label>
