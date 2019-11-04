@@ -1,21 +1,23 @@
 import React, {Component} from 'react';
 import './ProfileSettings.css';
 
-import {configSettingsMenu} from './SettingsOptions';
+import {ConfigSettingsMenu} from './SettingsOptions';
 
-// const configMenu = {
-//     personal: 'personalInfo',
-//     language: 'language',
-//     security: 'security'
-// };
 class ProfileSettings extends Component {
 
 constructor(props) {
     super();
     this.state = {
-            currentMenu: ''
+            currentMenu: 'personalInfo', // default menu
+            currentMenuData: {
+
+            }
         }
     }
+
+  componentDidMount() {
+      // get info about;
+  }
   
   renderList = () => {
     return ( 
@@ -31,6 +33,10 @@ constructor(props) {
     this.setState({currentMenu: type})
   }
 
+  inputData = e => {
+    this.setState();
+  }
+
   render() {
          return ( 
         <div className='profile-settings-menu'>
@@ -38,7 +44,7 @@ constructor(props) {
               {this.renderList()}
             </div>
             <div className='form-menu-container'>
-
+              <ConfigSettingsMenu type={this.state.currentMenu} default={'N/A'} />
             </div>
         </div>
         )

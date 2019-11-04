@@ -1,44 +1,56 @@
 import React from 'react';
+import {FormField} from 'reusables/FormField/FormField';
+import "./ProfileSettings.css"
 
  const PersonalInfo = (props) => {
     return (
-        <form id="personalInfo" className="form">
-            <label>First Name</label>
-            <input
-                id='settingsFirstName'
-                value={props.defaultValue || ''}
-                autoComplete="off"
-                //onChange
-            />
-            <label>Last Name</label>
-            <input
-                id='settingsLastName'
-                value={props.defaultValue || ''}
-                autoComplete="off"
-                //onChange
-            />
+        <form id="personalInfo" className="settings-form">
+            <fieldset>
+               <FormField label={'First Name'} labelFor={'settingsFirstName'} >           
+                    <input
+                        id='settingsFirstName'
+                        defaultValue={props.default}
+                        // value={''}
+                        autoComplete="off"
+                        //onChange
+                        />
+                </FormField>
+                <FormField  label={'Last Name'} labelFor={'settingsLastName'}>
+                    <input
+                        id='settingsLastName'
+                        defaultValue={props.default}
+                        // value={''}
+                        autoComplete="off"
+                        //onChange
+                    />
+                </FormField>
             <label>Age</label>
             <input
                 id='age'
-                value={props.defaultValue || ''}
+                defaultValue={props.default}
+                // value={''}
                 autoComplete="off"
                 //onChange
-            />
+                />
              <label>Sex</label>
+             
             <input
                 id='age'
-                value={props.defaultValue || ''}
+                defaultValue={props.default}
+                // value={''}
                 autoComplete="off"
                 //onChange
-            />
+                />
             <label>Currently Living</label>
             <input
                 id='location'
-                value={props.defaultValue || ''}
+                defaultValue={props.default}
+                // value={''}
                 autoComplete="off"
                 //onChange
-            />
-        </form>
+                />
+        </fieldset>
+    </form>
     )
 }
 
@@ -50,12 +62,14 @@ const Security = () => {
 
 }
 
-export const configSettingsMenu = (props) => {
+export const ConfigSettingsMenu = (props) => {
    const config = {
         personalInfo: PersonalInfo,
         language: Language,
         security: Security
     }
 
-    return config[props];
+    const SettingsMenuForm = config[props.type];
+
+    return <SettingsMenuForm default={props.default} />
 }

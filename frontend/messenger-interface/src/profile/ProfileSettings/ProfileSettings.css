@@ -41,6 +41,30 @@
     content: "";
 } 
 
-.settings-list-item:focus {
+.settings-list-item:active {
     background-color: red;
   }
+
+.form-menu-container {
+    padding: 25px;
+    height: 100%;
+    overflow: scroll;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 50%;
+}
+
+/* 
+position: relative;
+background-color: lightblue;
+margin: auto;
+padding: 2.5%;
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 50%; 
+*/
