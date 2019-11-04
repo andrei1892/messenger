@@ -21,7 +21,7 @@ const FriendsSuggestions = props => {
                 <span className="px-1">{suggestion.firstname}</span>
                 <span>{suggestion.lastname}</span>
               </div>
-              <Button classes={'btn btn-add-friend'} content={'Add Friend'} onClick={props.sendFriendRequest} />
+              <Button extraClass={'btn btn-add-friend'} text={'Add Friend'} onClick={props.sendFriendRequest} />
             </div>
           );
         })}

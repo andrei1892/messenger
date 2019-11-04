@@ -13,7 +13,7 @@ class Modal extends Component {
             <div className={`modal-container ${size}`} >
                 <header className='modal-header'>
                 <div>{title}</div>    
-                <Button classes={'close-button'} content={'X'} onClick={closeSettings}/>
+                <Button extraClass={'close-button'} text={'X'} onClick={closeSettings}/>
                 </header>
                {this.props.children}
             </div>

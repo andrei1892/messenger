@@ -9,7 +9,7 @@ class FriendProfile extends Component{
         if(toggle){
         return(
             <div className='friend-profile friend-profile-open slide-down'>
-                <Button classes={'close-button'} onClick = {closeFriendInfo} content={'X'} />
+                <Button extraClass={'close-button'} onClick={closeFriendInfo} text={'X'} />
                 <div>{info.firstname} {info.lastname}</div>
                 <div>Email: {info.email}</div>
             </div>

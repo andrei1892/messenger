@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import {Button} from "reusables/Button/Button";
-import "./Login.css"
+import "./FirstPage.css"
 
 const LoginForm = props => {
   const [isLogged, logging] = React.useState(false);
@@ -53,7 +53,7 @@ const LoginForm = props => {
           placeholder="Password"
           onChange={props.getCredentials}
         />
-        <Button type={'submit'} classes={"submit-button"} content={'Sign In'} />
+        <Button type={'submit'} extraClass={`login-button submit-button`} text={'Sign In'} />
       </form>
       <p>
         Don't have an account? <Link to="/register"> Register </Link> now!

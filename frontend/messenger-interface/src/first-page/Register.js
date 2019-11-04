@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import {Button} from 'reusables/Button/Button'
-import "./Register.css";
+import "./FirstPage.css"
 
 const RegisterForm = props => {  
   const [isRegistered, register] = React.useState(false);
@@ -35,7 +35,7 @@ const RegisterForm = props => {
     <div className="form-container register-form-container">
       <h3>Please complete all fields</h3>
       <Link to="/">
-        <Button classes={'close-button'} content={'X'} />
+        <Button extraClass={`close-register close-button`} text={'X'} />
       </Link>
       <form id="register" className="form" method="post" onSubmit={submitRegister}>
         <label htmlFor="registerFirstname">
@@ -89,7 +89,7 @@ const RegisterForm = props => {
           onChange={props.getCredentials}
           required
         />
-         <Button type={'submit'} classes={"submit-button"} content={'Register'} />
+         <Button type={'submit'} extraClass={'register-button submit-button'} text={'Register'} />
       </form>
     </div>
   );

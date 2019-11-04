@@ -22,8 +22,8 @@ const FriendsList = props => {
         {props.pendingRequests.length !== 0 ? (
           <FriendWrapper list={props.pendingRequests} category={"Friend Requests"}>
             <div>
-              <Button classes={'btn btn-add-friend'} value={'accept'}  content={'Accept'} onClick={props.requestResponse} />
-              <Button classes={'btn btn-add-friend'} value={'reject'}  content={'Reject'} onClick={props.requestResponse} />
+              <Button extraClass={'btn btn-add-friend'} value={'accept'} text={'Accept'} onClick={props.requestResponse} />
+              <Button extraClass={'btn btn-add-friend'} value={'reject'} text={'Reject'} onClick={props.requestResponse} />
             </div>
           </FriendWrapper>
         ) : null}

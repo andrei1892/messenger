@@ -2,14 +2,14 @@ import React from 'react'
 import "./Button.css"
 
 const Button = (props) => {
-  const {classes, type, value, onClick, content} = props;
+  const { extraClass, type, value, onClick, text} = props;
     return(
         <button 
-          className={classes} 
+          className={extraClass} 
           type={type} 
           value={value}
           onClick={onClick}>
-        {content}
+        {text}
       </button>
     )
 }
