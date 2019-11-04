@@ -1,5 +1,6 @@
 import React from 'react';
 import {FormField} from 'reusables/FormField/FormField';
+import Form from 'react-bootstrap/Form'
 import "./ProfileSettings.css"
 
  const PersonalInfo = (props) => {
@@ -24,31 +25,38 @@ import "./ProfileSettings.css"
                         //onChange
                     />
                 </FormField>
-            <label>Age</label>
-            <input
-                id='age'
-                defaultValue={props.default}
-                // value={''}
-                autoComplete="off"
-                //onChange
-                />
-             <label>Sex</label>
-             
-            <input
-                id='age'
-                defaultValue={props.default}
-                // value={''}
-                autoComplete="off"
-                //onChange
-                />
-            <label>Currently Living</label>
-            <input
-                id='location'
-                defaultValue={props.default}
-                // value={''}
-                autoComplete="off"
-                //onChange
-                />
+                <FormField label={'Age'} labelFor={'Age'}>
+                    <input
+                        id='age'
+                        defaultValue={props.default}
+                        // value={''}
+                        autoComplete="off"
+                        //onChange
+                        />
+                </FormField>
+                <FormField  label={'Sex'} labelFor={'sex'}>
+                    <input
+                        id='sex'
+                        defaultValue={props.default}
+                        // value={''}
+                        autoComplete="off"
+                        //onChange
+                    />
+                     <Form.Check
+                        id='visibleSex' 
+                        type="switch"
+                        label="Show on profile"
+                    />
+                </FormField>
+                <FormField  label={'Currently Living'} labelFor={'location'}>
+                    <input
+                        id='location'
+                        defaultValue={props.default}
+                        // value={''}
+                        autoComplete="off"
+                        //onChange
+                    />
+                </FormField>
         </fieldset>
     </form>
     )
