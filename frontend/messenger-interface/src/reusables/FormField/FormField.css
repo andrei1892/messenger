@@ -2,12 +2,16 @@
     height: 85px;
     display: grid;
     grid-template-rows: 40% auto;
-    grid-template-columns: [col1] 70% [col2] 30% [col3];
+    grid-template-columns: [col1] 65% [col2] 30% [col3];
+    grid-column-gap: 5%;
     width: 100%;
     padding: 10px 5px;
 }
-
 .form-field-container label {
     grid-row: 1/2;
     grid-column: col1/col3;
+}
+
+.form-field-container label, .form-field-container input  {
+    margin: 0;
 }

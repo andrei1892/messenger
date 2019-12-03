@@ -8,10 +8,8 @@ class ProfileSettings extends Component {
 constructor(props) {
     super();
     this.state = {
-            currentMenu: 'personalInfo', // default menu
-            currentMenuData: {
-
-            }
+            currentMenu: 'Personal Info', // default menu
+            currentMenuData: {}
         }
     }
 
@@ -21,16 +19,16 @@ constructor(props) {
   
   renderList = () => {
     return ( 
-            <ul className='settings-list' >
-                    <li className='settings-list-item'> Personal Info </li>
-                    <li className='settings-list-item'> Language </li>
-                    <li className='settings-list-item'> Security </li>
+            <ul className='settings-list'>
+                    <li className='settings-list-item' onClick={(e) => this.setMenu(e)} > Personal Info </li>
+                    <li className='settings-list-item' onClick={(e)=>  this.setMenu(e)} > Language </li>
+                    <li className='settings-list-item' onClick={(e)=>  this.setMenu(e)} > Security </li>
             </ul>
     );
   }
 
-  setMenu = (type) => {
-    this.setState({currentMenu: type})
+  setMenu = (e) => {
+    this.setState({currentMenu: e.currentTarget.innerText})
   }
 
   inputData = e => {
@@ -38,17 +36,17 @@ constructor(props) {
   }
 
   render() {
-         return ( 
+    return ( 
         <div className='profile-settings-menu'>
             <div className='sidebar-wrapper'>
               {this.renderList()}
             </div>
             <div className='form-menu-container'>
-              <ConfigSettingsMenu type={this.state.currentMenu} default={'N/A'} />
+              <ConfigSettingsMenu type={this.state.currentMenu} default={''} />
             </div>
         </div>
-        )
-    }
+    );
+  }
 }
 
 export {ProfileSettings};
